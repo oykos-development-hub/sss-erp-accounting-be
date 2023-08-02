@@ -68,4 +68,6 @@ jobs:
               rm -rf ../../accountingApp
               cp ./accountingApp ../../
               cp ./.env-example ../../.env
+              cp ./.env-example .env
+              ./cli migrate || true
               sudo systemctl restart sss-erp-accounting-be.service
