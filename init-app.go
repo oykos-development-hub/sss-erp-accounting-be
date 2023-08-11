@@ -4,8 +4,10 @@ import (
 	"log"
 	"os"
 
+	"gitlab.sudovi.me/erp/accounting-api/data"
 	"gitlab.sudovi.me/erp/accounting-api/handlers"
 	"gitlab.sudovi.me/erp/accounting-api/middleware"
+	"gitlab.sudovi.me/erp/accounting-api/services"
 
 	"github.com/oykos-development-hub/celeritas"
 )
@@ -25,7 +27,18 @@ func initApplication() *celeritas.Celeritas {
 
 	cel.AppName = "gitlab.sudovi.me/erp/accounting-api"
 
-	myHandlers := &handlers.Handlers{}
+	models := data.New(cel.DB.Pool)
+
+	OrderListService := services.NewOrderListServiceImpl(cel, models.OrderList)
+	OrderListHandler := handlers.NewOrderListHandler(cel, OrderListService)
+
+	OrderProcurementArticleService := services.NewOrderProcurementArticleServiceImpl(cel, models.OrderProcurementArticle)
+	OrderProcurementArticleHandler := handlers.NewOrderProcurementArticleHandler(cel, OrderProcurementArticleService)
+
+	myHandlers := &handlers.Handlers{
+		OrderListHandler:               OrderListHandler,
+		OrderProcurementArticleHandler: OrderProcurementArticleHandler,
+	}
 
 	myMiddleware := &middleware.Middleware{
 		App: cel,
