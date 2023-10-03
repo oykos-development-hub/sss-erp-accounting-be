@@ -12,7 +12,7 @@ type OrderList struct {
 	DateOrder            time.Time  `db:"date_order"`
 	TotalPrice           float32    `db:"total_price"`
 	PublicProcurementID  int        `db:"public_procurement_id"`
-	SupplierID           int        `db:"supplier_id"`
+	SupplierID           *int       `db:"supplier_id"`
 	Status               string     `db:"status"`
 	DateSystem           *time.Time `db:"date_system"`
 	InvoiceDate          *time.Time `db:"invoice_date"`

@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS order_lists (
     date_order DATE NOT NULL,
     total_price DECIMAL(10, 2) NOT NULL,
     public_procurement_id INTEGER NOT NULL,
-    supplier_id INTEGER NOT NULL,
+    supplier_id INTEGER,
     status TEXT NOT NULL,
     date_system DATE,
     invoice_date DATE,

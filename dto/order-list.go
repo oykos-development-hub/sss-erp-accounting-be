@@ -19,7 +19,7 @@ type OrderListDTO struct {
 	DateOrder            time.Time  `json:"date_order" validate:"required"`
 	TotalPrice           float32    `json:"total_price"`
 	PublicProcurementID  int        `json:"public_procurement_id"`
-	SupplierID           int        `json:"supplier_id"`
+	SupplierID           *int       `json:"supplier_id"`
 	Status               string     `json:"status"`
 	DateSystem           *time.Time `json:"date_system"`
 	InvoiceDate          *time.Time `json:"invoice_date"`
@@ -35,7 +35,7 @@ type OrderListResponseDTO struct {
 	DateOrder            time.Time  `json:"date_order" validate:"required"`
 	TotalPrice           float32    `json:"total_price"`
 	PublicProcurementID  int        `json:"public_procurement_id"`
-	SupplierID           int        `json:"supplier_id"`
+	SupplierID           *int       `json:"supplier_id"`
 	Status               string     `json:"status"`
 	DateSystem           *time.Time `json:"date_system"`
 	InvoiceDate          *time.Time `json:"invoice_date"`
