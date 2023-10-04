@@ -26,7 +26,7 @@ type OrderListDTO struct {
 	InvoiceNumber        *int       `json:"invoice_number"`
 	OrganizationUnitID   int        `json:"organization_unit_id"`
 	OfficeID             *int       `json:"office_id"`
-	RecipientUserID      int        `json:"recipient_user_id"`
+	RecipientUserID      *int       `json:"recipient_user_id"`
 	DescriptionRecipient *string    `json:"description_recipient"`
 }
 
@@ -42,7 +42,7 @@ type OrderListResponseDTO struct {
 	InvoiceNumber        *int       `json:"invoice_number"`
 	OrganizationUnitID   int        `json:"organization_unit_id"`
 	OfficeID             *int       `json:"office_id"`
-	RecipientUserID      int        `json:"recipient_user_id"`
+	RecipientUserID      *int       `json:"recipient_user_id"`
 	DescriptionRecipient *string    `json:"description_recipient"`
 	CreatedAt            time.Time  `json:"created_at"`
 	UpdatedAt            time.Time  `json:"updated_at"`

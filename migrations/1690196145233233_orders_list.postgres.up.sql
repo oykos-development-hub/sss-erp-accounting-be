@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS order_lists (
     invoice_number INTEGER,
     organization_unit_id INTEGER NOT NULL,
     office_id INTEGER,
-    recipient_user_id INTEGER NOT NULL,
+    recipient_user_id INTEGER,
     description_recipient TEXT,
     created_at TIMESTAMP,
     updated_at TIMESTAMP
