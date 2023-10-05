@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS order_lists (
     organization_unit_id INTEGER NOT NULL,
     office_id INTEGER,
     recipient_user_id INTEGER,
-    description_recipient TEXT,
+    description TEXT,
     created_at TIMESTAMP,
     updated_at TIMESTAMP
 );

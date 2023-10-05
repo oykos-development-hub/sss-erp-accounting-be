@@ -8,21 +8,21 @@ import (
 
 // Order list struct
 type OrderList struct {
-	ID                   int        `db:"id,omitempty"`
-	DateOrder            time.Time  `db:"date_order"`
-	TotalPrice           float32    `db:"total_price"`
-	PublicProcurementID  int        `db:"public_procurement_id"`
-	SupplierID           *int       `db:"supplier_id"`
-	Status               string     `db:"status"`
-	DateSystem           *time.Time `db:"date_system"`
-	InvoiceDate          *time.Time `db:"invoice_date"`
-	InvoiceNumber        *int       `db:"invoice_number"`
-	OrganizationUnitID   int        `db:"organization_unit_id"`
-	OfficeID             *int       `db:"office_id"`
-	RecipientUserID      *int       `db:"recipient_user_id"`
-	DescriptionRecipient *string    `db:"description_recipient"`
-	CreatedAt            time.Time  `db:"created_at,omitempty"`
-	UpdatedAt            time.Time  `db:"updated_at"`
+	ID                  int        `db:"id,omitempty"`
+	DateOrder           time.Time  `db:"date_order"`
+	TotalPrice          float32    `db:"total_price"`
+	PublicProcurementID int        `db:"public_procurement_id"`
+	SupplierID          *int       `db:"supplier_id"`
+	Status              string     `db:"status"`
+	DateSystem          *time.Time `db:"date_system"`
+	InvoiceDate         *time.Time `db:"invoice_date"`
+	InvoiceNumber       *int       `db:"invoice_number"`
+	OrganizationUnitID  int        `db:"organization_unit_id"`
+	OfficeID            *int       `db:"office_id"`
+	RecipientUserID     int        `db:"recipient_user_id"`
+	Description         *string    `db:"description"`
+	CreatedAt           time.Time  `db:"created_at,omitempty"`
+	UpdatedAt           time.Time  `db:"updated_at"`
 }
 
 // Table returns the table name
