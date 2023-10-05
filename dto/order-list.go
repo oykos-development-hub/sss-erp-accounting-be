@@ -29,6 +29,7 @@ type OrderListDTO struct {
 	RecipientUserID     *int       `json:"recipient_user_id"`
 	Description         *string    `json:"description"`
 }
+
 type OrderListResponseDTO struct {
 	ID                  int        `json:"id"`
 	DateOrder           time.Time  `json:"date_order" validate:"required"`
