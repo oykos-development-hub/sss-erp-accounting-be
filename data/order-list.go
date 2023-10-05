@@ -19,7 +19,7 @@ type OrderList struct {
 	InvoiceNumber       *int       `db:"invoice_number"`
 	OrganizationUnitID  int        `db:"organization_unit_id"`
 	OfficeID            *int       `db:"office_id"`
-	RecipientUserID     int        `db:"recipient_user_id"`
+	RecipientUserID     *int       `db:"recipient_user_id"`
 	Description         *string    `db:"description"`
 	CreatedAt           time.Time  `db:"created_at,omitempty"`
 	UpdatedAt           time.Time  `db:"updated_at"`
