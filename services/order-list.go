@@ -98,6 +98,12 @@ func (h *OrderListServiceImpl) GetOrderLists(input dto.GetOrderListInputDTO) ([]
 		}
 		conditions = append(conditions, cond)
 	}
+	if input.OrganizationUnitID != nil {
+		cond := up.Cond{
+			"organization_unit_id": input.OrganizationUnitID,
+		}
+		conditions = append(conditions, cond)
+	}
 	if input.Status != nil {
 		cond := up.Cond{
 			"status": input.Status,

@@ -13,6 +13,7 @@ type GetOrderListInputDTO struct {
 	Status              *string `json:"status"`
 	Search              *string `json:"search"`
 	PublicProcurementID *int    `json:"public_procurement_id"`
+	OrganizationUnitID  *int    `json:"organization_unit_id"`
 }
 
 type OrderListDTO struct {
