@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS order_lists (
     status TEXT NOT NULL,
     date_system DATE,
     invoice_date DATE,
-    invoice_number TEXT,
+    invoice_number TEXT DEFAULT '0',
     organization_unit_id INTEGER NOT NULL,
     office_id INTEGER,
     recipient_user_id INTEGER,
