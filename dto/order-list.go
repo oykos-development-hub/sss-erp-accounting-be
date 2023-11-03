@@ -24,7 +24,7 @@ type OrderListDTO struct {
 	Status              string     `json:"status"`
 	DateSystem          *time.Time `json:"date_system"`
 	InvoiceDate         *time.Time `json:"invoice_date"`
-	InvoiceNumber       *int       `json:"invoice_number"`
+	InvoiceNumber       *string    `json:"invoice_number"`
 	OrganizationUnitID  int        `json:"organization_unit_id"`
 	OfficeID            *int       `json:"office_id"`
 	RecipientUserID     *int       `json:"recipient_user_id"`
@@ -40,7 +40,7 @@ type OrderListResponseDTO struct {
 	Status              string     `json:"status"`
 	DateSystem          *time.Time `json:"date_system"`
 	InvoiceDate         *time.Time `json:"invoice_date"`
-	InvoiceNumber       *int       `json:"invoice_number"`
+	InvoiceNumber       *string    `json:"invoice_number"`
 	OrganizationUnitID  int        `json:"organization_unit_id"`
 	OfficeID            *int       `json:"office_id"`
 	RecipientUserID     *int       `json:"recipient_user_id"`
