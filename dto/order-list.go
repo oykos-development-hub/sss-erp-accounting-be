@@ -19,6 +19,7 @@ type GetOrderListInputDTO struct {
 type OrderListDTO struct {
 	DateOrder           time.Time  `json:"date_order" validate:"required"`
 	TotalPrice          float32    `json:"total_price"`
+	IsUsed              bool       `json:"is_used"`
 	PublicProcurementID int        `json:"public_procurement_id"`
 	SupplierID          *int       `json:"supplier_id"`
 	Status              string     `json:"status"`
@@ -38,6 +39,7 @@ type OrderListResponseDTO struct {
 	PublicProcurementID int        `json:"public_procurement_id"`
 	SupplierID          *int       `json:"supplier_id"`
 	Status              string     `json:"status"`
+	IsUsed              bool       `json:"is_used"`
 	DateSystem          *time.Time `json:"date_system"`
 	InvoiceDate         *time.Time `json:"invoice_date"`
 	InvoiceNumber       *string    `json:"invoice_number"`
@@ -61,6 +63,7 @@ func (dto OrderListDTO) ToOrderList() *data.OrderList {
 		InvoiceNumber:       dto.InvoiceNumber,
 		OrganizationUnitID:  dto.OrganizationUnitID,
 		OfficeID:            dto.OfficeID,
+		IsUsed:              dto.IsUsed,
 		RecipientUserID:     dto.RecipientUserID,
 		Description:         dto.Description,
 	}
@@ -74,6 +77,7 @@ func ToOrderListResponseDTO(data data.OrderList) OrderListResponseDTO {
 		PublicProcurementID: data.PublicProcurementID,
 		SupplierID:          data.SupplierID,
 		Status:              data.Status,
+		IsUsed:              data.IsUsed,
 		DateSystem:          data.DateSystem,
 		InvoiceDate:         data.InvoiceDate,
 		InvoiceNumber:       data.InvoiceNumber,

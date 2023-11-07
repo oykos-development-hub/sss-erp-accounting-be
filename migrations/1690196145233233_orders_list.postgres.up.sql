@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS order_lists (
     date_system DATE,
     invoice_date DATE,
     invoice_number TEXT DEFAULT '0',
+    is_used BOOLEAN DEFAULT false,
     organization_unit_id INTEGER NOT NULL,
     office_id INTEGER,
     recipient_user_id INTEGER,

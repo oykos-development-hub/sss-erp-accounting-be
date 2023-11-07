@@ -13,6 +13,7 @@ type OrderList struct {
 	TotalPrice          float32    `db:"total_price"`
 	PublicProcurementID int        `db:"public_procurement_id"`
 	SupplierID          *int       `db:"supplier_id"`
+	IsUsed              bool       `db:"is_used"`
 	Status              string     `db:"status"`
 	DateSystem          *time.Time `db:"date_system"`
 	InvoiceDate         *time.Time `db:"invoice_date"`
