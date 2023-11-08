@@ -3,7 +3,6 @@ package dto
 import (
 	"time"
 
-	"github.com/lib/pq"
 	"gitlab.sudovi.me/erp/accounting-api/data"
 )
 
@@ -18,40 +17,44 @@ type GetOrderListInputDTO struct {
 }
 
 type OrderListDTO struct {
-	DateOrder           time.Time     `json:"date_order" validate:"required"`
-	TotalPrice          float32       `json:"total_price"`
-	IsUsed              bool          `json:"is_used"`
-	PublicProcurementID int           `json:"public_procurement_id"`
-	SupplierID          *int          `json:"supplier_id"`
-	Status              string        `json:"status"`
-	DateSystem          *time.Time    `json:"date_system"`
-	InvoiceDate         *time.Time    `json:"invoice_date"`
-	InvoiceNumber       *string       `json:"invoice_number"`
-	OrganizationUnitID  int           `json:"organization_unit_id"`
-	OfficeID            *int          `json:"office_id"`
-	RecipientUserID     *int          `json:"recipient_user_id"`
-	Description         *string       `json:"description"`
-	File                pq.Int64Array `json:"file"`
+	DateOrder           time.Time  `json:"date_order" validate:"required"`
+	TotalPrice          float32    `json:"total_price"`
+	IsUsed              bool       `json:"is_used"`
+	PublicProcurementID int        `json:"public_procurement_id"`
+	SupplierID          *int       `json:"supplier_id"`
+	Status              string     `json:"status"`
+	DateSystem          *time.Time `json:"date_system"`
+	InvoiceDate         *time.Time `json:"invoice_date"`
+	InvoiceNumber       *string    `json:"invoice_number"`
+	OrganizationUnitID  int        `json:"organization_unit_id"`
+	OfficeID            *int       `json:"office_id"`
+	RecipientUserID     *int       `json:"recipient_user_id"`
+	Description         *string    `json:"description"`
+	OrderFile           *int       `json:"order_file"`
+	ReceiveFile         *int       `json:"receive_file"`
+	MovementFile        *int       `json:"movement_file"`
 }
 
 type OrderListResponseDTO struct {
-	ID                  int           `json:"id"`
-	DateOrder           time.Time     `json:"date_order" validate:"required"`
-	TotalPrice          float32       `json:"total_price"`
-	PublicProcurementID int           `json:"public_procurement_id"`
-	SupplierID          *int          `json:"supplier_id"`
-	Status              string        `json:"status"`
-	IsUsed              bool          `json:"is_used"`
-	DateSystem          *time.Time    `json:"date_system"`
-	InvoiceDate         *time.Time    `json:"invoice_date"`
-	InvoiceNumber       *string       `json:"invoice_number"`
-	OrganizationUnitID  int           `json:"organization_unit_id"`
-	OfficeID            *int          `json:"office_id"`
-	RecipientUserID     *int          `json:"recipient_user_id"`
-	Description         *string       `json:"description"`
-	File                pq.Int64Array `json:"file"`
-	CreatedAt           time.Time     `json:"created_at"`
-	UpdatedAt           time.Time     `json:"updated_at"`
+	ID                  int        `json:"id"`
+	DateOrder           time.Time  `json:"date_order" validate:"required"`
+	TotalPrice          float32    `json:"total_price"`
+	PublicProcurementID int        `json:"public_procurement_id"`
+	SupplierID          *int       `json:"supplier_id"`
+	Status              string     `json:"status"`
+	IsUsed              bool       `json:"is_used"`
+	DateSystem          *time.Time `json:"date_system"`
+	InvoiceDate         *time.Time `json:"invoice_date"`
+	InvoiceNumber       *string    `json:"invoice_number"`
+	OrganizationUnitID  int        `json:"organization_unit_id"`
+	OfficeID            *int       `json:"office_id"`
+	RecipientUserID     *int       `json:"recipient_user_id"`
+	Description         *string    `json:"description"`
+	OrderFile           *int       `json:"order_file"`
+	ReceiveFile         *int       `json:"receive_file"`
+	MovementFile        *int       `json:"movement_file"`
+	CreatedAt           time.Time  `json:"created_at"`
+	UpdatedAt           time.Time  `json:"updated_at"`
 }
 
 func (dto OrderListDTO) ToOrderList() *data.OrderList {
@@ -69,7 +72,9 @@ func (dto OrderListDTO) ToOrderList() *data.OrderList {
 		IsUsed:              dto.IsUsed,
 		RecipientUserID:     dto.RecipientUserID,
 		Description:         dto.Description,
-		File:                dto.File,
+		OrderFile:           dto.OrderFile,
+		ReceiveFile:         dto.ReceiveFile,
+		MovementFile:        dto.MovementFile,
 	}
 }
 
@@ -89,7 +94,9 @@ func ToOrderListResponseDTO(data data.OrderList) OrderListResponseDTO {
 		OfficeID:            data.OfficeID,
 		RecipientUserID:     data.RecipientUserID,
 		Description:         data.Description,
-		File:                data.File,
+		OrderFile:           data.OrderFile,
+		ReceiveFile:         data.ReceiveFile,
+		MovementFile:        data.MovementFile,
 		CreatedAt:           data.CreatedAt,
 		UpdatedAt:           data.UpdatedAt,
 	}

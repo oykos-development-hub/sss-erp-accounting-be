@@ -13,7 +13,9 @@ CREATE TABLE IF NOT EXISTS order_lists (
     office_id INTEGER,
     recipient_user_id INTEGER,
     description TEXT,
-    file INTEGER[],
+    order_file INTEGER,
+    receive_file INTEGER,
+    movement_file INTEGER,
     created_at TIMESTAMP,
     updated_at TIMESTAMP
 );
