@@ -83,7 +83,7 @@ func (h *StockServiceImpl) GetStockList(input *dto.StockFilterDTO) ([]dto.StockR
 	conditionAndExp := &up.AndExpr{}
 
 	if input.Title != nil {
-		conditionAndExp = up.And(conditionAndExp, &up.Cond{"title LIKE": *input.Title})
+		conditionAndExp = up.And(conditionAndExp, &up.Cond{"title ILIKE": *input.Title})
 	}
 
 	data, total, err := h.repo.GetAll(input.Page, input.Size, conditionAndExp)
