@@ -8,7 +8,7 @@ import (
 
 // Stock struct
 type Stock struct {
-	ID          int       `db:"id,omitemtpy"`
+	ID          int       `db:"id,omitempty"`
 	Title       string    `db:"title"`
 	Description string    `db:"description"`
 	Amount      int       `db:"amount"`

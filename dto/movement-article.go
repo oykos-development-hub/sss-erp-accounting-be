@@ -31,16 +31,22 @@ type MovementArticlesFilterDTO struct {
 
 func (dto MovementArticleDTO) ToMovementArticle() *data.MovementArticle {
 	return &data.MovementArticle{
-		Title: dto.Title,
+		Title:       dto.Title,
+		Description: dto.Description,
+		Amount:      dto.Amount,
+		MovementID:  dto.MovementID,
 	}
 }
 
 func ToMovementArticleResponseDTO(data data.MovementArticle) MovementArticleResponseDTO {
 	return MovementArticleResponseDTO{
-		ID:        data.ID,
-		Title:     data.Title,
-		CreatedAt: data.CreatedAt,
-		UpdatedAt: data.UpdatedAt,
+		ID:          data.ID,
+		Title:       data.Title,
+		Description: data.Description,
+		Amount:      data.Amount,
+		MovementID:  data.MovementID,
+		CreatedAt:   data.CreatedAt,
+		UpdatedAt:   data.UpdatedAt,
 	}
 }
 

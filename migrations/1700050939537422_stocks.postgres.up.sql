@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS stocks (
-    id SERIAL PRIMARY KEY,
+    id serial PRIMARY KEY,
     title TEXT NOT NULL,
     description TEXT,
     amount INTEGER,
