@@ -21,7 +21,10 @@ var upper db2.Session
 type Models struct {
 	OrderList               OrderList
 	OrderProcurementArticle OrderProcurementArticle
-}
+	Movement Movement
+		Stock Stock
+		MovementArticle MovementArticle
+	}
 
 func New(databasePool *sql.DB) Models {
 	db = databasePool
@@ -38,6 +41,9 @@ func New(databasePool *sql.DB) Models {
 	return Models{
 		OrderList:               OrderList{},
 		OrderProcurementArticle: OrderProcurementArticle{},
+		Movement: Movement{},
+		Stock: Stock{},
+		MovementArticle: MovementArticle{},
 	}
 }
 

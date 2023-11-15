@@ -35,9 +35,24 @@ func initApplication() *celeritas.Celeritas {
 	OrderProcurementArticleService := services.NewOrderProcurementArticleServiceImpl(cel, models.OrderProcurementArticle)
 	OrderProcurementArticleHandler := handlers.NewOrderProcurementArticleHandler(cel, OrderProcurementArticleService)
 
+		
+	MovementService := services.NewMovementServiceImpl(cel, models.Movement)
+	MovementHandler := handlers.NewMovementHandler(cel, MovementService)
+
+		
+	StockService := services.NewStockServiceImpl(cel, models.Stock)
+	StockHandler := handlers.NewStockHandler(cel, StockService)
+
+		
+	MovementArticleService := services.NewMovementArticleServiceImpl(cel, models.MovementArticle)
+	MovementArticleHandler := handlers.NewMovementArticleHandler(cel, MovementArticleService)
+
 	myHandlers := &handlers.Handlers{
 		OrderListHandler:               OrderListHandler,
 		OrderProcurementArticleHandler: OrderProcurementArticleHandler,
+		MovementHandler: MovementHandler,
+		StockHandler: StockHandler,
+		MovementArticleHandler: MovementArticleHandler,
 	}
 
 	myMiddleware := &middleware.Middleware{
