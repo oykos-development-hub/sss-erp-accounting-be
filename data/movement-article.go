@@ -29,7 +29,7 @@ func (t *MovementArticle) GetAll(page *int, size *int, condition *up.AndExpr) ([
 	var res up.Result
 
 	if condition != nil {
-		res = collection.Find(*condition)
+		res = collection.Find(condition)
 	} else {
 		res = collection.Find()
 	}

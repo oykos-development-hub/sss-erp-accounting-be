@@ -31,7 +31,7 @@ func (t *Movement) GetAll(page *int, size *int, condition *up.AndExpr) ([]*Movem
 	var res up.Result
 
 	if condition != nil {
-		res = collection.Find(*condition)
+		res = collection.Find(condition)
 	} else {
 		res = collection.Find()
 	}
