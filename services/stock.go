@@ -6,6 +6,7 @@ import (
 	"gitlab.sudovi.me/erp/accounting-api/errors"
 
 	"github.com/oykos-development-hub/celeritas"
+	up "github.com/upper/db/v4"
 )
 
 type StockServiceImpl struct {
@@ -79,7 +80,13 @@ func (h *StockServiceImpl) GetStock(id int) (*dto.StockResponseDTO, error) {
 }
 
 func (h *StockServiceImpl) GetStockList(input *dto.StockFilterDTO) ([]dto.StockResponseDTO, *uint64, error) {
-	data, total, err := h.repo.GetAll(input.Page, input.Size, nil)
+	conditionAndExp := &up.AndExpr{}
+
+	if input.ArticleID != nil {
+		conditionAndExp = up.And(conditionAndExp, &up.Cond{"article_id": *input.ArticleID})
+	}
+
+	data, total, err := h.repo.GetAll(input.Page, input.Size, conditionAndExp)
 
 	if err != nil {
 		h.App.ErrorLog.Println(err)

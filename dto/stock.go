@@ -20,8 +20,9 @@ type StockResponseDTO struct {
 }
 
 type StockFilterDTO struct {
-	Page *int `json:"page"`
-	Size *int `json:"size"`
+	Page      *int `json:"page"`
+	Size      *int `json:"size"`
+	ArticleID *int `json:"article_id"`
 }
 
 func (dto StockDTO) ToStock() *data.Stock {
