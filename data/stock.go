@@ -8,12 +8,11 @@ import (
 
 // Stock struct
 type Stock struct {
-	ID          int       `db:"id,omitempty"`
-	Title       string    `db:"title"`
-	Description string    `db:"description"`
-	Amount      int       `db:"amount"`
-	CreatedAt   time.Time `db:"created_at,omitempty"`
-	UpdatedAt   time.Time `db:"updated_at"`
+	ID        int       `db:"id,omitempty"`
+	ArticleID int       `db:"article_id"`
+	Amount    int       `db:"amount"`
+	CreatedAt time.Time `db:"created_at,omitempty"`
+	UpdatedAt time.Time `db:"updated_at"`
 }
 
 // Table returns the table name
@@ -42,7 +41,7 @@ func (t *Stock) GetAll(page *int, size *int, condition *up.AndExpr) ([]*Stock, *
 		res = paginateResult(res, *page, *size)
 	}
 
-	err = res.OrderBy("title asc").All(&all)
+	err = res.OrderBy("id asc").All(&all)
 	if err != nil {
 		return nil, nil, err
 	}

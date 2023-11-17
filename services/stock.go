@@ -1,14 +1,11 @@
 package services
 
 import (
-	"fmt"
-
 	"gitlab.sudovi.me/erp/accounting-api/data"
 	"gitlab.sudovi.me/erp/accounting-api/dto"
 	"gitlab.sudovi.me/erp/accounting-api/errors"
 
 	"github.com/oykos-development-hub/celeritas"
-	up "github.com/upper/db/v4"
 )
 
 type StockServiceImpl struct {
@@ -82,15 +79,7 @@ func (h *StockServiceImpl) GetStock(id int) (*dto.StockResponseDTO, error) {
 }
 
 func (h *StockServiceImpl) GetStockList(input *dto.StockFilterDTO) ([]dto.StockResponseDTO, *uint64, error) {
-	conditionAndExp := &up.AndExpr{}
-
-	if input.Title != nil && *input.Title != "" {
-		likeCondition := fmt.Sprintf("%%%s%%", *input.Title)
-
-		conditionAndExp = up.And(conditionAndExp, &up.Cond{"title ILIKE": likeCondition})
-	}
-
-	data, total, err := h.repo.GetAll(input.Page, input.Size, conditionAndExp)
+	data, total, err := h.repo.GetAll(input.Page, input.Size, nil)
 
 	if err != nil {
 		h.App.ErrorLog.Println(err)
