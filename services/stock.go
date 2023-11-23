@@ -86,6 +86,10 @@ func (h *StockServiceImpl) GetStockList(input *dto.StockFilterDTO) ([]dto.StockR
 		conditionAndExp = up.And(conditionAndExp, &up.Cond{"article_id": *input.ArticleID})
 	}
 
+	if input.OrganizationUnitID != nil {
+		conditionAndExp = up.And(conditionAndExp, &up.Cond{"organization_unit_id": *input.OrganizationUnitID})
+	}
+
 	data, total, err := h.repo.GetAll(input.Page, input.Size, conditionAndExp)
 
 	if err != nil {

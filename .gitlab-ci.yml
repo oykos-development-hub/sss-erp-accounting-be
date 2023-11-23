@@ -48,7 +48,7 @@ push_to_github:
         mkdir ../tmp;
         cd ../tmp;
       fi
-    - rm -rf ./sss-erp-hr-be  
+    - rm -rf ./sss-erp-accounting-be  
     - git clone git@github.com:oykos-development-hub/sss-erp-accounting-be.git
     - cd sss-erp-accounting-be
     - git checkout development
@@ -58,3 +58,4 @@ push_to_github:
     - git config --global user.name "oykos-development-hub"
     - git commit -m "Update code from GitLab"
     - git push origin development
+

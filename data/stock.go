@@ -8,11 +8,12 @@ import (
 
 // Stock struct
 type Stock struct {
-	ID        int       `db:"id,omitempty"`
-	ArticleID int       `db:"article_id"`
-	Amount    int       `db:"amount"`
-	CreatedAt time.Time `db:"created_at,omitempty"`
-	UpdatedAt time.Time `db:"updated_at"`
+	ID                 int       `db:"id,omitempty"`
+	ArticleID          int       `db:"article_id"`
+	OrganizationUnitID int       `db:"organization_unit_id"`
+	Amount             int       `db:"amount"`
+	CreatedAt          time.Time `db:"created_at,omitempty"`
+	UpdatedAt          time.Time `db:"updated_at"`
 }
 
 // Table returns the table name

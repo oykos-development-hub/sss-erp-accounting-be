@@ -27,6 +27,7 @@ func NewStockHandler(app *celeritas.Celeritas, stockService services.StockServic
 }
 
 func (h *stockHandlerImpl) CreateStock(w http.ResponseWriter, r *http.Request) {
+
 	var input dto.StockDTO
 	err := h.App.ReadJSON(w, r, &input)
 	if err != nil {

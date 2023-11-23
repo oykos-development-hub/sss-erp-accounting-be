@@ -7,38 +7,43 @@ import (
 )
 
 type StockDTO struct {
-	ArticleID int `json:"article_id"`
-	Amount    int `json:"amount"`
+	ArticleID          int `json:"article_id"`
+	Amount             int `json:"amount"`
+	OrganizationUnitID int `json:"organization_unit_id"`
 }
 
 type StockResponseDTO struct {
-	ID        int       `json:"id"`
-	ArticleID int       `json:"article_id"`
-	Amount    int       `json:"amount"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
+	ID                 int       `json:"id"`
+	ArticleID          int       `json:"article_id"`
+	OrganizationUnitID int       `json:"organization_unit_id"`
+	Amount             int       `json:"amount"`
+	CreatedAt          time.Time `json:"created_at"`
+	UpdatedAt          time.Time `json:"updated_at"`
 }
 
 type StockFilterDTO struct {
-	Page      *int `json:"page"`
-	Size      *int `json:"size"`
-	ArticleID *int `json:"article_id"`
+	Page               *int `json:"page"`
+	Size               *int `json:"size"`
+	ArticleID          *int `json:"article_id"`
+	OrganizationUnitID *int `json:"organization_unit_id"`
 }
 
 func (dto StockDTO) ToStock() *data.Stock {
 	return &data.Stock{
-		ArticleID: dto.ArticleID,
-		Amount:    dto.Amount,
+		ArticleID:          dto.ArticleID,
+		Amount:             dto.Amount,
+		OrganizationUnitID: dto.OrganizationUnitID,
 	}
 }
 
 func ToStockResponseDTO(data data.Stock) StockResponseDTO {
 	return StockResponseDTO{
-		ID:        data.ID,
-		ArticleID: data.ArticleID,
-		Amount:    data.Amount,
-		CreatedAt: data.CreatedAt,
-		UpdatedAt: data.UpdatedAt,
+		ID:                 data.ID,
+		ArticleID:          data.ArticleID,
+		Amount:             data.Amount,
+		OrganizationUnitID: data.OrganizationUnitID,
+		CreatedAt:          data.CreatedAt,
+		UpdatedAt:          data.UpdatedAt,
 	}
 }
 
