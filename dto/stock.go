@@ -7,14 +7,18 @@ import (
 )
 
 type StockDTO struct {
-	ArticleID          int `json:"article_id"`
-	Amount             int `json:"amount"`
-	OrganizationUnitID int `json:"organization_unit_id"`
+	Year               string `json:"year"`
+	Title              string `json:"title"`
+	Description        string `json:"description"`
+	Amount             int    `json:"amount"`
+	OrganizationUnitID int    `json:"organization_unit_id"`
 }
 
 type StockResponseDTO struct {
 	ID                 int       `json:"id"`
-	ArticleID          int       `json:"article_id"`
+	Year               string    `json:"year"`
+	Title              string    `json:"title"`
+	Description        string    `json:"description"`
 	OrganizationUnitID int       `json:"organization_unit_id"`
 	Amount             int       `json:"amount"`
 	CreatedAt          time.Time `json:"created_at"`
@@ -22,15 +26,19 @@ type StockResponseDTO struct {
 }
 
 type StockFilterDTO struct {
-	Page               *int `json:"page"`
-	Size               *int `json:"size"`
-	ArticleID          *int `json:"article_id"`
-	OrganizationUnitID *int `json:"organization_unit_id"`
+	Page               *int    `json:"page"`
+	Size               *int    `json:"size"`
+	Year               *string `json:"year"`
+	Title              *string `json:"title"`
+	Description        *string `json:"description"`
+	OrganizationUnitID *int    `json:"organization_unit_id"`
 }
 
 func (dto StockDTO) ToStock() *data.Stock {
 	return &data.Stock{
-		ArticleID:          dto.ArticleID,
+		Title:              dto.Title,
+		Description:        dto.Description,
+		Year:               dto.Year,
 		Amount:             dto.Amount,
 		OrganizationUnitID: dto.OrganizationUnitID,
 	}
@@ -39,7 +47,9 @@ func (dto StockDTO) ToStock() *data.Stock {
 func ToStockResponseDTO(data data.Stock) StockResponseDTO {
 	return StockResponseDTO{
 		ID:                 data.ID,
-		ArticleID:          data.ArticleID,
+		Title:              data.Title,
+		Description:        data.Description,
+		Year:               data.Year,
 		Amount:             data.Amount,
 		OrganizationUnitID: data.OrganizationUnitID,
 		CreatedAt:          data.CreatedAt,

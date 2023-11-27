@@ -9,7 +9,9 @@ import (
 // Stock struct
 type Stock struct {
 	ID                 int       `db:"id,omitempty"`
-	ArticleID          int       `db:"article_id"`
+	Year               string    `db:"year"`
+	Title              string    `db:"title"`
+	Description        string    `db:"description"`
 	OrganizationUnitID int       `db:"organization_unit_id"`
 	Amount             int       `db:"amount"`
 	CreatedAt          time.Time `db:"created_at,omitempty"`

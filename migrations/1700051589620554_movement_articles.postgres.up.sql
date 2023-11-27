@@ -1,6 +1,8 @@
 CREATE TABLE IF NOT EXISTS movement_articles (
     id serial PRIMARY KEY,
-    article_id INTEGER,
+    year TEXT,
+    title TEXT,
+    description TEXT,
     movement_id INTEGER REFERENCES movements(id) ON DELETE CASCADE,
     amount INTEGER,
     created_at TIMESTAMP,

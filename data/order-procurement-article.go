@@ -8,12 +8,14 @@ import (
 
 // Order procurement article struct
 type OrderProcurementArticle struct {
-	ID        int       `db:"id,omitempty"`
-	OrderID   int       `db:"order_id"`
-	ArticleID int       `db:"article_id"`
-	Amount    int       `db:"amount"`
-	CreatedAt time.Time `db:"created_at,omitempty"`
-	UpdatedAt time.Time `db:"updated_at"`
+	ID          int       `db:"id,omitempty"`
+	OrderID     int       `db:"order_id"`
+	ArticleID   int       `db:"article_id"`
+	Title       string    `db:"title"`
+	Description string    `db:"description"`
+	Amount      int       `db:"amount"`
+	CreatedAt   time.Time `db:"created_at,omitempty"`
+	UpdatedAt   time.Time `db:"updated_at"`
 }
 
 // Table returns the table name

@@ -1,7 +1,9 @@
 CREATE TABLE IF NOT EXISTS order_procurement_articles (
     id serial PRIMARY KEY,
     order_id INTEGER NOT NULL,
-    article_id INTEGER NOT NULL,
+    article_id INTEGER,
+    title TEXT,
+    description TEXT,
     amount INTEGER NOT NULL,
     created_at TIMESTAMP,
     updated_at TIMESTAMP,

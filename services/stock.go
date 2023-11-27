@@ -82,8 +82,16 @@ func (h *StockServiceImpl) GetStock(id int) (*dto.StockResponseDTO, error) {
 func (h *StockServiceImpl) GetStockList(input *dto.StockFilterDTO) ([]dto.StockResponseDTO, *uint64, error) {
 	conditionAndExp := &up.AndExpr{}
 
-	if input.ArticleID != nil {
-		conditionAndExp = up.And(conditionAndExp, &up.Cond{"article_id": *input.ArticleID})
+	if input.Year != nil {
+		conditionAndExp = up.And(conditionAndExp, &up.Cond{"year": *input.Year})
+	}
+
+	if input.Title != nil {
+		conditionAndExp = up.And(conditionAndExp, &up.Cond{"title": *input.Title})
+	}
+
+	if input.Description != nil {
+		conditionAndExp = up.And(conditionAndExp, &up.Cond{"description": *input.Description})
 	}
 
 	if input.OrganizationUnitID != nil {

@@ -1,6 +1,8 @@
 CREATE TABLE IF NOT EXISTS stocks (
     id serial PRIMARY KEY,
-    article_id INTEGER NOT NULL,
+    title TEXT,
+    description TEXT,
+    year TEXT,
     amount INTEGER NOT NULL,
     organization_unit_id INTEGER NOT NULL,
     created_at TIMESTAMP,

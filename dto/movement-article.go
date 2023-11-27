@@ -7,18 +7,22 @@ import (
 )
 
 type MovementArticleDTO struct {
-	MovementID int `json:"movement_id"`
-	ArticleID  int `json:"article_id"`
-	Amount     int `json:"amount"`
+	MovementID  int    `json:"movement_id"`
+	Year        string `json:"year"`
+	Title       string `json:"title"`
+	Description string `json:"description"`
+	Amount      int    `json:"amount"`
 }
 
 type MovementArticleResponseDTO struct {
-	ID         int       `json:"id"`
-	MovementID int       `json:"movement_id"`
-	ArticleID  int       `json:"article_id"`
-	Amount     int       `json:"amount"`
-	CreatedAt  time.Time `json:"created_at"`
-	UpdatedAt  time.Time `json:"updated_at"`
+	ID          int       `json:"id"`
+	MovementID  int       `json:"movement_id"`
+	Year        string    `json:"year"`
+	Title       string    `json:"title"`
+	Description string    `json:"description"`
+	Amount      int       `json:"amount"`
+	CreatedAt   time.Time `json:"created_at"`
+	UpdatedAt   time.Time `json:"updated_at"`
 }
 
 type MovementArticlesFilterDTO struct {
@@ -29,20 +33,24 @@ type MovementArticlesFilterDTO struct {
 
 func (dto MovementArticleDTO) ToMovementArticle() *data.MovementArticle {
 	return &data.MovementArticle{
-		ArticleID:  dto.ArticleID,
-		Amount:     dto.Amount,
-		MovementID: dto.MovementID,
+		Year:        dto.Year,
+		Title:       dto.Title,
+		Description: dto.Description,
+		Amount:      dto.Amount,
+		MovementID:  dto.MovementID,
 	}
 }
 
 func ToMovementArticleResponseDTO(data data.MovementArticle) MovementArticleResponseDTO {
 	return MovementArticleResponseDTO{
-		ID:         data.ID,
-		ArticleID:  data.ArticleID,
-		Amount:     data.Amount,
-		MovementID: data.MovementID,
-		CreatedAt:  data.CreatedAt,
-		UpdatedAt:  data.UpdatedAt,
+		ID:          data.ID,
+		Year:        data.Year,
+		Description: data.Description,
+		Title:       data.Title,
+		Amount:      data.Amount,
+		MovementID:  data.MovementID,
+		CreatedAt:   data.CreatedAt,
+		UpdatedAt:   data.UpdatedAt,
 	}
 }
 
