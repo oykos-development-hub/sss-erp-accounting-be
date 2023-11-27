@@ -14,19 +14,19 @@ type GetOrderProcurementArticleInputDTO struct {
 }
 
 type OrderProcurementArticleDTO struct {
-	OrderID     int    `json:"order_id"`
-	Title       string `json:"title"`
-	Description string `json:"description"`
-	ArticleID   int    `json:"article_id"`
-	Amount      int    `json:"amount"`
+	OrderID     int     `json:"order_id"`
+	Title       *string `json:"title"`
+	Description *string `json:"description"`
+	ArticleID   *int    `json:"article_id"`
+	Amount      int     `json:"amount"`
 }
 
 type OrderProcurementArticleResponseDTO struct {
 	ID          int       `json:"id"`
 	OrderID     int       `json:"order_id"`
-	ArticleID   int       `json:"article_id"`
-	Title       string    `json:"title"`
-	Description string    `json:"description"`
+	ArticleID   *int      `json:"article_id"`
+	Title       *string   `json:"title"`
+	Description *string   `json:"description"`
 	Amount      int       `json:"amount"`
 	CreatedAt   time.Time `json:"created_at"`
 	UpdatedAt   time.Time `json:"updated_at"`
