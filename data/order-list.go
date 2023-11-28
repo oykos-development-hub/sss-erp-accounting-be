@@ -19,6 +19,7 @@ type OrderList struct {
 	InvoiceDate         *time.Time `db:"invoice_date"`
 	InvoiceNumber       *string    `db:"invoice_number"`
 	OrganizationUnitID  int        `db:"organization_unit_id"`
+	GroupOfArticlesID   *int       `db:"group_of_articles_id"`
 	OfficeID            *int       `db:"office_id"`
 	RecipientUserID     *int       `db:"recipient_user_id"`
 	Description         *string    `db:"description"`

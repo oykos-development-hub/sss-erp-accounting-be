@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS order_lists (
     organization_unit_id INTEGER NOT NULL,
     office_id INTEGER,
     recipient_user_id INTEGER,
+    group_of_articles_id INTEGER,
     description TEXT,
     order_file INTEGER,
     receive_file INTEGER,
