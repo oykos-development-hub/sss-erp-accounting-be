@@ -14,6 +14,7 @@ type GetOrderListInputDTO struct {
 	Search              *string `json:"search"`
 	PublicProcurementID *int    `json:"public_procurement_id"`
 	OrganizationUnitID  *int    `json:"organization_unit_id"`
+	Year                *string `json:"year"`
 }
 
 type OrderListDTO struct {

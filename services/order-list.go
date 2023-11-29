@@ -2,6 +2,8 @@ package services
 
 import (
 	"fmt"
+	"strconv"
+	"time"
 
 	"github.com/oykos-development-hub/celeritas"
 	up "github.com/upper/db/v4"
@@ -116,6 +118,21 @@ func (h *OrderListServiceImpl) GetOrderLists(input dto.GetOrderListInputDTO) ([]
 			up.Cond{"description_recipient ILIKE": likeCondition},
 		)
 		conditions = append(conditions, searchCond)
+	}
+
+	if input.Year != nil && *input.Year != "" {
+		year, err := strconv.Atoi(*input.Year)
+		if err != nil {
+			return nil, nil, err
+		}
+		startOfYear := time.Date(year, time.January, 1, 0, 0, 0, 0, time.UTC)
+		endOfYear := time.Date(year, time.December, 31, 23, 59, 59, 999999999, time.UTC)
+
+		dateCond := up.And(
+			up.Cond{"created_at >=": startOfYear},
+			up.Cond{"created_at <=": endOfYear},
+		)
+		conditions = append(conditions, dateCond)
 	}
 
 	if len(conditions) > 0 {
