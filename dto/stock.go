@@ -11,6 +11,7 @@ type StockDTO struct {
 	Title              string `json:"title"`
 	Description        string `json:"description"`
 	Amount             int    `json:"amount"`
+	Exception          bool   `json:"exception"`
 	OrganizationUnitID int    `json:"organization_unit_id"`
 }
 
@@ -21,6 +22,7 @@ type StockResponseDTO struct {
 	Description        string    `json:"description"`
 	OrganizationUnitID int       `json:"organization_unit_id"`
 	Amount             int       `json:"amount"`
+	Exception          bool      `json:"exception"`
 	CreatedAt          time.Time `json:"created_at"`
 	UpdatedAt          time.Time `json:"updated_at"`
 }
@@ -39,6 +41,7 @@ func (dto StockDTO) ToStock() *data.Stock {
 		Title:              dto.Title,
 		Description:        dto.Description,
 		Year:               dto.Year,
+		Exception:          dto.Exception,
 		Amount:             dto.Amount,
 		OrganizationUnitID: dto.OrganizationUnitID,
 	}
@@ -51,6 +54,7 @@ func ToStockResponseDTO(data data.Stock) StockResponseDTO {
 		Description:        data.Description,
 		Year:               data.Year,
 		Amount:             data.Amount,
+		Exception:          data.Exception,
 		OrganizationUnitID: data.OrganizationUnitID,
 		CreatedAt:          data.CreatedAt,
 		UpdatedAt:          data.UpdatedAt,

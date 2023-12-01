@@ -14,6 +14,7 @@ type Stock struct {
 	Description        string    `db:"description"`
 	OrganizationUnitID int       `db:"organization_unit_id"`
 	Amount             int       `db:"amount"`
+	Exception          bool      `db:"exception"`
 	CreatedAt          time.Time `db:"created_at,omitempty"`
 	UpdatedAt          time.Time `db:"updated_at"`
 }
