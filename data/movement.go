@@ -119,8 +119,8 @@ func (t *Movement) GetAllForReport(Year *string, Title *string, OfficeID *int) (
 
 	query := `SELECT a.year, a.title, a.description, sum(a.amount) as amount 
 			   FROM movement_articles a, movements m 
-			   WHERE a.movement_id = m.id 
-			   GROUP BY a.year, a.title, a.description`
+			   WHERE a.movement_id = m.id`
+	groupBy := `GROUP BY a.year, a.title, a.description`
 
 	var filters []interface{}
 	var filterArgs []string
@@ -143,6 +143,8 @@ func (t *Movement) GetAllForReport(Year *string, Title *string, OfficeID *int) (
 	if len(filters) > 0 {
 		query += " AND " + strings.Join(filterArgs, " AND ")
 	}
+
+	query += groupBy
 
 	rows, err := upper.SQL().Query(query, filters...)
 	if err != nil {
