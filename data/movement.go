@@ -132,7 +132,7 @@ func (t *Movement) GetAllForReport(Year *string, Title *string, OfficeID *int) (
 
 	if Title != nil && *Title != "" {
 		filters = append(filters, "%"+*Title+"%")
-		filterArgs = append(filterArgs, "title LIKE $"+strconv.Itoa(len(filterArgs)+1))
+		filterArgs = append(filterArgs, "a.title LIKE $"+strconv.Itoa(len(filterArgs)+1))
 	}
 
 	if OfficeID != nil && *OfficeID != 0 {
@@ -161,7 +161,7 @@ func (t *Movement) GetAllForReport(Year *string, Title *string, OfficeID *int) (
 		all = append(all, article)
 	}
 
-	err = res.OrderBy("title asc").All(&all)
+	err = res.All(&all)
 	if err != nil {
 		return nil, err
 	}
