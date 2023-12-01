@@ -35,10 +35,11 @@ type MovementFilterDTO struct {
 }
 
 type MovementReportFilterDTO struct {
-	Year      *string `json:"year"`
-	Title     *string `json:"title"`
-	OfficeID  *int    `json:"office_id"`
-	Exception *bool   `json:"exception"`
+	Year               *string `json:"year"`
+	Title              *string `json:"title"`
+	OfficeID           *int    `json:"office_id"`
+	Exception          *bool   `json:"exception"`
+	OrganizationUnitID *int    `json:"organization_unit_id"`
 }
 
 type ArticlesFilterDTO struct {
@@ -46,6 +47,7 @@ type ArticlesFilterDTO struct {
 	Title       string `json:"title"`
 	Description string `json:"description"`
 	Amount      int    `json:"amount"`
+	OfficeID    int    `json:"office_id"`
 }
 
 func (dto MovementDTO) ToMovement() *data.Movement {

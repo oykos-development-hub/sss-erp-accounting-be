@@ -26,6 +26,7 @@ type ArticlesFilter struct {
 	Title       string `json:"title"`
 	Description string `json:"description"`
 	Amount      int    `json:"amount"`
+	OfficeID    int    `json:"office_id"`
 }
 
 // Table returns the table name
@@ -113,13 +114,14 @@ func (t *Movement) Insert(m Movement) (int, error) {
 	return id, nil
 }
 
-func (t *Movement) GetAllForReport(Year *string, Title *string, OfficeID *int, Exception *bool) ([]ArticlesFilter, error) {
+func (t *Movement) GetAllForReport(Year *string, Title *string, OfficeID *int, Exception *bool, OrganizationUnitID *int) ([]ArticlesFilter, error) {
 	var all []ArticlesFilter
 
-	query := `SELECT a.year, a.title, a.description, sum(a.amount) as amount 
-			   FROM movement_articles a, movements m 
-			   WHERE a.movement_id = m.id`
-	groupBy := ` GROUP BY a.year, a.title, a.description ORDER BY a.title asc`
+	selectS := `SELECT a.year, a.title, a.description, sum(a.amount) as amount`
+	from := ` FROM movement_articles a, movements m`
+	where := ` WHERE a.movement_id = m.id`
+	groupBy := ` GROUP BY a.year, a.title, a.description`
+	orderBy := ` ORDER BY a.title asc`
 
 	var filters []interface{}
 	var filterArgs []string
@@ -146,11 +148,16 @@ func (t *Movement) GetAllForReport(Year *string, Title *string, OfficeID *int, E
 		filterArgs = append(filterArgs, "a.exception = $"+strconv.Itoa(len(filterArgs)+1))
 	}
 
-	if len(filters) > 0 {
-		query += " AND " + strings.Join(filterArgs, " AND ")
+	if OrganizationUnitID != nil {
+		selectS += ", m.office_id"
+		groupBy += ", m.office_id"
 	}
 
-	query += groupBy
+	if len(filters) > 0 {
+		where += " AND " + strings.Join(filterArgs, " AND ")
+	}
+
+	query := selectS + from + where + orderBy + groupBy
 
 	rows, err := upper.SQL().Query(query, filters...)
 	if err != nil {
@@ -160,9 +167,16 @@ func (t *Movement) GetAllForReport(Year *string, Title *string, OfficeID *int, E
 
 	for rows.Next() {
 		var article ArticlesFilter
-		err := rows.Scan(&article.Year, &article.Title, &article.Description, &article.Amount)
-		if err != nil {
-			return nil, err
+		if OrganizationUnitID != nil {
+			err := rows.Scan(&article.Year, &article.Title, &article.Description, &article.Amount, &article.OfficeID)
+			if err != nil {
+				return nil, err
+			}
+		} else {
+			err := rows.Scan(&article.Year, &article.Title, &article.Description, &article.Amount)
+			if err != nil {
+				return nil, err
+			}
 		}
 		all = append(all, article)
 	}

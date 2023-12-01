@@ -102,7 +102,7 @@ func (h *MovementServiceImpl) GetMovementList(input *dto.MovementFilterDTO) ([]d
 
 func (h *MovementServiceImpl) GetMovementReport(input *dto.MovementReportFilterDTO) ([]dto.ArticlesFilterDTO, error) {
 
-	data, err := h.repo.GetAllForReport(input.Year, input.Title, input.OfficeID, input.Exception)
+	data, err := h.repo.GetAllForReport(input.Year, input.Title, input.OfficeID, input.Exception, input.OrganizationUnitID)
 	if err != nil {
 		h.App.ErrorLog.Println(err)
 		return nil, errors.ErrInternalServer
@@ -116,6 +116,7 @@ func (h *MovementServiceImpl) GetMovementReport(input *dto.MovementReportFilterD
 			Title:       row.Title,
 			Description: row.Description,
 			Amount:      row.Amount,
+			OfficeID:    row.OfficeID,
 		})
 	}
 
