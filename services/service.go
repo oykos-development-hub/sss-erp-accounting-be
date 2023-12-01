@@ -32,6 +32,7 @@ type MovementService interface {
 	DeleteMovement(id int) error
 	GetMovement(id int) (*dto.MovementResponseDTO, error)
 	GetMovementList(*dto.MovementFilterDTO) ([]dto.MovementResponseDTO, *uint64, error)
+	GetMovementReport(*dto.MovementReportFilterDTO) ([]dto.ArticlesFilterDTO, error)
 }
 
 type StockService interface {

@@ -3,7 +3,6 @@ package data
 import (
 	"fmt"
 
-	db2 "github.com/upper/db/v4"
 	up "github.com/upper/db/v4"
 	"github.com/upper/db/v4/adapter/mysql"
 	"github.com/upper/db/v4/adapter/postgresql"
@@ -16,15 +15,15 @@ import (
 var db *sql.DB
 
 //nolint:all
-var upper db2.Session
+var upper up.Session
 
 type Models struct {
 	OrderList               OrderList
 	OrderProcurementArticle OrderProcurementArticle
-	Movement Movement
-		Stock Stock
-		MovementArticle MovementArticle
-	}
+	Movement                Movement
+	Stock                   Stock
+	MovementArticle         MovementArticle
+}
 
 func New(databasePool *sql.DB) Models {
 	db = databasePool
@@ -41,14 +40,14 @@ func New(databasePool *sql.DB) Models {
 	return Models{
 		OrderList:               OrderList{},
 		OrderProcurementArticle: OrderProcurementArticle{},
-		Movement: Movement{},
-		Stock: Stock{},
-		MovementArticle: MovementArticle{},
+		Movement:                Movement{},
+		Stock:                   Stock{},
+		MovementArticle:         MovementArticle{},
 	}
 }
 
 //nolint:all
-func getInsertId(i db2.ID) int {
+func getInsertId(i up.ID) int {
 	idType := fmt.Sprintf("%T", i)
 	if idType == "int64" {
 		return int(i.(int64))

@@ -1,6 +1,8 @@
 package data
 
 import (
+	"strconv"
+	"strings"
 	"time"
 
 	up "github.com/upper/db/v4"
@@ -17,6 +19,13 @@ type Movement struct {
 	FileID             int       `db:"file_id"`
 	CreatedAt          time.Time `db:"created_at,omitempty"`
 	UpdatedAt          time.Time `db:"updated_at"`
+}
+
+type ArticlesFilter struct {
+	Year        string `json:"year"`
+	Title       string `json:"title"`
+	Description string `json:"description"`
+	Amount      int    `json:"amount"`
 }
 
 // Table returns the table name
@@ -102,4 +111,58 @@ func (t *Movement) Insert(m Movement) (int, error) {
 	id := getInsertId(res.ID())
 
 	return id, nil
+}
+
+func (t *Movement) GetAllForReport(Year *string, Title *string, OfficeID *int) ([]ArticlesFilter, error) {
+	var all []ArticlesFilter
+	var res up.Result
+
+	query := `SELECT a.year, a.title, a.description, sum(a.amount) as amount 
+			   FROM movement_articles a, movements m 
+			   WHERE a.movement_id = m.id 
+			   GROUP BY a.year, a.title, a.description`
+
+	var filters []interface{}
+	var filterArgs []string
+
+	if Year != nil && *Year != "" {
+		filters = append(filters, Year)
+		filterArgs = append(filterArgs, "a.year = $"+strconv.Itoa(len(filterArgs)+1))
+	}
+
+	if Title != nil && *Title != "" {
+		filters = append(filters, "%"+*Title+"%")
+		filterArgs = append(filterArgs, "title LIKE $"+strconv.Itoa(len(filterArgs)+1))
+	}
+
+	if OfficeID != nil && *OfficeID != 0 {
+		filters = append(filters, OfficeID)
+		filterArgs = append(filterArgs, "a.office_id = $"+strconv.Itoa(len(filterArgs)+1))
+	}
+
+	if len(filters) > 0 {
+		query += " AND " + strings.Join(filterArgs, " AND ")
+	}
+
+	rows, err := upper.SQL().Query(query, filters...)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var article ArticlesFilter
+		err := rows.Scan(&article.Year, &article.Title, &article.Description, &article.Amount)
+		if err != nil {
+			return nil, err
+		}
+		all = append(all, article)
+	}
+
+	err = res.OrderBy("title asc").All(&all)
+	if err != nil {
+		return nil, err
+	}
+
+	return all, err
 }

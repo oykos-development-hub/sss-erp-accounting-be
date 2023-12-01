@@ -34,6 +34,19 @@ type MovementFilterDTO struct {
 	OfficeID        *int `json:"office_id"`
 }
 
+type MovementReportFilterDTO struct {
+	Year     *string `json:"year"`
+	Title    *string `json:"title"`
+	OfficeID *int    `json:"office_id"`
+}
+
+type ArticlesFilterDTO struct {
+	Year        string `json:"year"`
+	Title       string `json:"title"`
+	Description string `json:"description"`
+	Amount      int    `json:"amount"`
+}
+
 func (dto MovementDTO) ToMovement() *data.Movement {
 	return &data.Movement{
 		DateOrder:          dto.DateOrder,

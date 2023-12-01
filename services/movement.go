@@ -99,3 +99,25 @@ func (h *MovementServiceImpl) GetMovementList(input *dto.MovementFilterDTO) ([]d
 
 	return response, total, nil
 }
+
+func (h *MovementServiceImpl) GetMovementReport(input *dto.MovementReportFilterDTO) ([]dto.ArticlesFilterDTO, error) {
+
+	data, err := h.repo.GetAllForReport(input.Year, input.Title, input.OfficeID)
+	if err != nil {
+		h.App.ErrorLog.Println(err)
+		return nil, errors.ErrInternalServer
+	}
+
+	var response []dto.ArticlesFilterDTO
+
+	for _, row := range data {
+		response = append(response, dto.ArticlesFilterDTO{
+			Year:        row.Year,
+			Title:       row.Title,
+			Description: row.Description,
+			Amount:      row.Amount,
+		})
+	}
+
+	return response, nil
+}

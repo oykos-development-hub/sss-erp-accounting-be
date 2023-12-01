@@ -5,10 +5,10 @@ import "net/http"
 type Handlers struct {
 	OrderListHandler               OrderListHandler
 	OrderProcurementArticleHandler OrderProcurementArticleHandler
-	MovementHandler MovementHandler
-		StockHandler StockHandler
-		MovementArticleHandler MovementArticleHandler
-	}
+	MovementHandler                MovementHandler
+	StockHandler                   StockHandler
+	MovementArticleHandler         MovementArticleHandler
+}
 
 type OrderListHandler interface {
 	CreateOrderList(w http.ResponseWriter, r *http.Request)
@@ -32,6 +32,7 @@ type MovementHandler interface {
 	DeleteMovement(w http.ResponseWriter, r *http.Request)
 	GetMovementById(w http.ResponseWriter, r *http.Request)
 	GetMovementList(w http.ResponseWriter, r *http.Request)
+	GetMovementReport(w http.ResponseWriter, r *http.Request)
 }
 
 type StockHandler interface {

@@ -114,3 +114,20 @@ func (h *movementHandlerImpl) GetMovementList(w http.ResponseWriter, r *http.Req
 
 	_ = h.App.WriteDataResponseWithTotal(w, http.StatusOK, "", res, int(*total))
 }
+
+func (h *movementHandlerImpl) GetMovementReport(w http.ResponseWriter, r *http.Request) {
+	var input dto.MovementReportFilterDTO
+	err := h.App.ReadJSON(w, r, &input)
+	if err != nil {
+		_ = h.App.WriteErrorResponse(w, http.StatusBadRequest, err)
+		return
+	}
+
+	res, err := h.service.GetMovementReport(&input)
+	if err != nil {
+		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
+		return
+	}
+
+	_ = h.App.WriteDataResponse(w, http.StatusOK, "", res)
+}
