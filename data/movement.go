@@ -127,7 +127,8 @@ func (t *Movement) GetAllForReport(Year *string, Title *string, OfficeID *int, E
 	if Year != nil && *Year != "" {
 		year := *Year
 		filters = append(filters, year+"-01-01", year+"-12-31")
-		filterArgs = append(filterArgs, "a.created_at BETWEEN $"+strconv.Itoa(len(filterArgs)+1)+" AND $"+strconv.Itoa(len(filterArgs)+2))
+		filterArgs = append(filterArgs, "a.created_at > $"+strconv.Itoa(len(filterArgs)+1))
+		filterArgs = append(filterArgs, "a.created_at < $"+strconv.Itoa(len(filterArgs)+1))
 	}
 
 	if Title != nil && *Title != "" {
