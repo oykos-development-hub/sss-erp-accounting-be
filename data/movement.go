@@ -136,7 +136,7 @@ func (t *Movement) GetAllForReport(Year *string, Title *string, OfficeID *int) (
 
 	if OfficeID != nil && *OfficeID != 0 {
 		filters = append(filters, OfficeID)
-		filterArgs = append(filterArgs, "a.office_id = $"+strconv.Itoa(len(filterArgs)+1))
+		filterArgs = append(filterArgs, "m.office_id = $"+strconv.Itoa(len(filterArgs)+1))
 	}
 
 	if len(filters) > 0 {
