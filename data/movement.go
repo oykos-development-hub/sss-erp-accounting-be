@@ -119,14 +119,15 @@ func (t *Movement) GetAllForReport(Year *string, Title *string, OfficeID *int, E
 	query := `SELECT a.year, a.title, a.description, sum(a.amount) as amount 
 			   FROM movement_articles a, movements m 
 			   WHERE a.movement_id = m.id`
-	groupBy := `GROUP BY a.year, a.title, a.description ORDER BY a.title asc`
+	groupBy := ` GROUP BY a.year, a.title, a.description ORDER BY a.title asc`
 
 	var filters []interface{}
 	var filterArgs []string
 
 	if Year != nil && *Year != "" {
-		filters = append(filters, Year)
-		filterArgs = append(filterArgs, "a.year = $"+strconv.Itoa(len(filterArgs)+1))
+		year := *Year
+		filters = append(filters, year+"-01-01", year+"-12-31")
+		filterArgs = append(filterArgs, "a.created_at BETWEEN $"+strconv.Itoa(len(filterArgs)+1)+" AND $"+strconv.Itoa(len(filterArgs)+2))
 	}
 
 	if Title != nil && *Title != "" {
