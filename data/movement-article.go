@@ -12,6 +12,7 @@ type MovementArticle struct {
 	Year        string    `db:"year"`
 	Title       string    `db:"title"`
 	Description string    `db:"description"`
+	Exception   bool      `db:"exception"`
 	MovementID  int       `db:"movement_id"`
 	Amount      int       `db:"amount"`
 	CreatedAt   time.Time `db:"created_at,omitempty"`
