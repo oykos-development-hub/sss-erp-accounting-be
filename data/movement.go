@@ -115,12 +115,11 @@ func (t *Movement) Insert(m Movement) (int, error) {
 
 func (t *Movement) GetAllForReport(Year *string, Title *string, OfficeID *int) ([]ArticlesFilter, error) {
 	var all []ArticlesFilter
-	var res up.Result
 
 	query := `SELECT a.year, a.title, a.description, sum(a.amount) as amount 
 			   FROM movement_articles a, movements m 
 			   WHERE a.movement_id = m.id`
-	groupBy := `GROUP BY a.year, a.title, a.description`
+	groupBy := `GROUP BY a.year, a.title, a.description ORDER BY a.title asc`
 
 	var filters []interface{}
 	var filterArgs []string
@@ -159,11 +158,6 @@ func (t *Movement) GetAllForReport(Year *string, Title *string, OfficeID *int) (
 			return nil, err
 		}
 		all = append(all, article)
-	}
-
-	err = res.All(&all)
-	if err != nil {
-		return nil, err
 	}
 
 	return all, err
