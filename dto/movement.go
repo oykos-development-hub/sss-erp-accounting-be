@@ -35,9 +35,10 @@ type MovementFilterDTO struct {
 }
 
 type MovementReportFilterDTO struct {
-	Year     *string `json:"year"`
-	Title    *string `json:"title"`
-	OfficeID *int    `json:"office_id"`
+	Year      *string `json:"year"`
+	Title     *string `json:"title"`
+	OfficeID  *int    `json:"office_id"`
+	Exception *bool   `json:"exception"`
 }
 
 type ArticlesFilterDTO struct {

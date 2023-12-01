@@ -113,7 +113,7 @@ func (t *Movement) Insert(m Movement) (int, error) {
 	return id, nil
 }
 
-func (t *Movement) GetAllForReport(Year *string, Title *string, OfficeID *int) ([]ArticlesFilter, error) {
+func (t *Movement) GetAllForReport(Year *string, Title *string, OfficeID *int, Exception *bool) ([]ArticlesFilter, error) {
 	var all []ArticlesFilter
 
 	query := `SELECT a.year, a.title, a.description, sum(a.amount) as amount 
@@ -137,6 +137,11 @@ func (t *Movement) GetAllForReport(Year *string, Title *string, OfficeID *int) (
 	if OfficeID != nil && *OfficeID != 0 {
 		filters = append(filters, OfficeID)
 		filterArgs = append(filterArgs, "m.office_id = $"+strconv.Itoa(len(filterArgs)+1))
+	}
+
+	if Exception != nil && *Exception {
+		filters = append(filters, Exception)
+		filterArgs = append(filterArgs, "a.exception = $"+strconv.Itoa(len(filterArgs)+1))
 	}
 
 	if len(filters) > 0 {
