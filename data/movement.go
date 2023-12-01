@@ -157,7 +157,7 @@ func (t *Movement) GetAllForReport(Year *string, Title *string, OfficeID *int, E
 		where += " AND " + strings.Join(filterArgs, " AND ")
 	}
 
-	query := selectS + from + where + orderBy + groupBy
+	query := selectS + from + where + groupBy + orderBy
 
 	rows, err := upper.SQL().Query(query, filters...)
 	if err != nil {
