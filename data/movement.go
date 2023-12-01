@@ -141,7 +141,7 @@ func (t *Movement) GetAllForReport(Year *string, Title *string, OfficeID *int, E
 		filterArgs = append(filterArgs, "m.office_id = $"+strconv.Itoa(len(filterArgs)+1))
 	}
 
-	if Exception != nil && *Exception {
+	if Exception != nil {
 		filters = append(filters, Exception)
 		filterArgs = append(filterArgs, "a.exception = $"+strconv.Itoa(len(filterArgs)+1))
 	}
