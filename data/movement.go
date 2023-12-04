@@ -140,7 +140,7 @@ func (t *Movement) GetAllForReport(StartDate *string, EndDate *string, Title *st
 
 	if Title != nil && *Title != "" {
 		lowercaseTitle := strings.ToLower(*Title)
-		filters = append(filters, "%"+lowercaseTitle+"%")
+		filters = append(filters, lowercaseTitle+"%")
 		filterArgs = append(filterArgs, "LOWER(a.title) LIKE $"+strconv.Itoa(len(filterArgs)+1))
 	}
 
