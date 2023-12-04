@@ -139,8 +139,9 @@ func (t *Movement) GetAllForReport(StartDate *string, EndDate *string, Title *st
 	}
 
 	if Title != nil && *Title != "" {
-		filters = append(filters, "%"+*Title+"%")
-		filterArgs = append(filterArgs, "a.title LIKE $"+strconv.Itoa(len(filterArgs)+1))
+		lowercaseTitle := strings.ToLower(*Title)
+		filters = append(filters, "%"+lowercaseTitle+"%")
+		filterArgs = append(filterArgs, "LOWER(a.title) LIKE $"+strconv.Itoa(len(filterArgs)+1))
 	}
 
 	if OfficeID != nil && *OfficeID != 0 {
