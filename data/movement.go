@@ -114,7 +114,7 @@ func (t *Movement) Insert(m Movement) (int, error) {
 	return id, nil
 }
 
-func (t *Movement) GetAllForReport(Year *string, Title *string, OfficeID *int, Exception *bool, OrganizationUnitID *int) ([]ArticlesFilter, error) {
+func (t *Movement) GetAllForReport(StartDate *string, EndDate *string, Title *string, OfficeID *int, Exception *bool, OrganizationUnitID *int) ([]ArticlesFilter, error) {
 	var all []ArticlesFilter
 
 	selectS := `SELECT a.year, a.title, a.description, sum(a.amount) as amount`
@@ -126,10 +126,15 @@ func (t *Movement) GetAllForReport(Year *string, Title *string, OfficeID *int, E
 	var filters []interface{}
 	var filterArgs []string
 
-	if Year != nil && *Year != "" {
-		year := *Year
-		filters = append(filters, year+"-01-01", year+"-12-31")
+	if StartDate != nil && *StartDate != "" && EndDate != nil && *EndDate != "" {
+		start := *StartDate
+		filters = append(filters, start)
 		filterArgs = append(filterArgs, "a.created_at > $"+strconv.Itoa(len(filterArgs)+1))
+	}
+
+	if EndDate != nil && *EndDate != "" {
+		end := *EndDate
+		filters = append(filters, end)
 		filterArgs = append(filterArgs, "a.created_at < $"+strconv.Itoa(len(filterArgs)+1))
 	}
 
