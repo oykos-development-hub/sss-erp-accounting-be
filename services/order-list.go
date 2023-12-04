@@ -135,6 +135,11 @@ func (h *OrderListServiceImpl) GetOrderLists(input dto.GetOrderListInputDTO) ([]
 		conditions = append(conditions, dateCond)
 	}
 
+	if input.InvoiceDate != nil && *input.InvoiceDate != "" {
+		cond := up.Cond{"invoice_date <=": input.InvoiceDate}
+		conditions = append(conditions, cond)
+	}
+
 	if len(conditions) > 0 {
 		combinedCond = up.And(conditions...)
 	}
