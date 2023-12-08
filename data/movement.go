@@ -35,7 +35,7 @@ func (t *Movement) Table() string {
 }
 
 // GetAll gets all records from the database, using upper
-func (t *Movement) GetAll(page *int, size *int, condition *up.AndExpr) ([]*Movement, *uint64, error) {
+func (t *Movement) GetAll(page *int, size *int, condition *up.AndExpr, orders []interface{}) ([]*Movement, *uint64, error) {
 	collection := upper.Collection(t.Table())
 	var all []*Movement
 	var res up.Result
@@ -55,7 +55,7 @@ func (t *Movement) GetAll(page *int, size *int, condition *up.AndExpr) ([]*Movem
 		res = paginateResult(res, *page, *size)
 	}
 
-	err = res.OrderBy("created_at desc").All(&all)
+	err = res.OrderBy(orders...).All(&all)
 	if err != nil {
 		return nil, nil, err
 	}

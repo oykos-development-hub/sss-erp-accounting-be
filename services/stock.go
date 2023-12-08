@@ -99,7 +99,27 @@ func (h *StockServiceImpl) GetStockList(input *dto.StockFilterDTO) ([]dto.StockR
 		conditionAndExp = up.And(conditionAndExp, &up.Cond{"organization_unit_id": *input.OrganizationUnitID})
 	}
 
-	data, total, err := h.repo.GetAll(input.Page, input.Size, conditionAndExp)
+	var orders []interface{}
+
+	if input.SortByAmount != nil {
+		if *input.SortByAmount == "asc" {
+			orders = append(orders, "-amount")
+		} else {
+			orders = append(orders, "amount")
+		}
+	}
+
+	if input.SortByYear != nil {
+		if *input.SortByYear == "asc" {
+			orders = append(orders, "-year")
+		} else {
+			orders = append(orders, "year")
+		}
+	}
+
+	orders = append(orders, "-created_at")
+
+	data, total, err := h.repo.GetAll(input.Page, input.Size, conditionAndExp, orders)
 
 	if err != nil {
 		h.App.ErrorLog.Println(err)

@@ -34,6 +34,8 @@ type StockFilterDTO struct {
 	Title              *string `json:"title"`
 	Description        *string `json:"description"`
 	OrganizationUnitID *int    `json:"organization_unit_id"`
+	SortByYear         *string `json:"sort_by_year"`
+	SortByAmount       *string `json:"sort_by_amount"`
 }
 
 func (dto StockDTO) ToStock() *data.Stock {

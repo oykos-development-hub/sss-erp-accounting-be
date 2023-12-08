@@ -16,6 +16,8 @@ type GetOrderListInputDTO struct {
 	OrganizationUnitID  *int    `json:"organization_unit_id"`
 	InvoiceDate         *string `json:"invoice_date"`
 	Year                *string `json:"year"`
+	SortByDateOrder     *string `json:"sort_by_date_order"`
+	SortByTotalPrice    *string `json:"sort_by_total_price"`
 }
 
 type OrderListDTO struct {

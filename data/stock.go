@@ -25,7 +25,7 @@ func (t *Stock) Table() string {
 }
 
 // GetAll gets all records from the database, using upper
-func (t *Stock) GetAll(page *int, size *int, condition *up.AndExpr) ([]*Stock, *uint64, error) {
+func (t *Stock) GetAll(page *int, size *int, condition *up.AndExpr, orders []interface{}) ([]*Stock, *uint64, error) {
 	collection := upper.Collection(t.Table())
 	var all []*Stock
 	var res up.Result
@@ -45,7 +45,7 @@ func (t *Stock) GetAll(page *int, size *int, condition *up.AndExpr) ([]*Stock, *
 		res = paginateResult(res, *page, *size)
 	}
 
-	err = res.OrderBy("id asc").All(&all)
+	err = res.OrderBy(orders...).All(&all)
 	if err != nil {
 		return nil, nil, err
 	}

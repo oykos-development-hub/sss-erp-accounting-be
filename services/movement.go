@@ -90,7 +90,19 @@ func (h *MovementServiceImpl) GetMovementList(input *dto.MovementFilterDTO) ([]d
 		conditionAndExp = up.And(conditionAndExp, &up.Cond{"office_id": *input.OfficeID})
 	}
 
-	data, total, err := h.repo.GetAll(input.Page, input.Size, conditionAndExp)
+	var orders []interface{}
+
+	if input.SortByDateOrder != nil {
+		if *input.SortByDateOrder == "asc" {
+			orders = append(orders, "-date_order")
+		} else {
+			orders = append(orders, "date_order")
+		}
+	}
+
+	orders = append(orders, "-created_at")
+
+	data, total, err := h.repo.GetAll(input.Page, input.Size, conditionAndExp, orders)
 	if err != nil {
 		h.App.ErrorLog.Println(err)
 		return nil, nil, errors.ErrInternalServer

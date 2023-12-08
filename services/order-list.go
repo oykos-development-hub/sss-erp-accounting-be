@@ -144,7 +144,27 @@ func (h *OrderListServiceImpl) GetOrderLists(input dto.GetOrderListInputDTO) ([]
 		combinedCond = up.And(conditions...)
 	}
 
-	res, total, err := h.repo.GetAll(input.Page, input.Size, combinedCond)
+	var orders []interface{}
+
+	if input.SortByDateOrder != nil {
+		if *input.SortByDateOrder == "asc" {
+			orders = append(orders, "-date_order")
+		} else {
+			orders = append(orders, "date_order")
+		}
+	}
+
+	if input.SortByTotalPrice != nil {
+		if *input.SortByTotalPrice == "asc" {
+			orders = append(orders, "-total_price")
+		} else {
+			orders = append(orders, "total_price")
+		}
+	}
+
+	orders = append(orders, "-created_at")
+
+	res, total, err := h.repo.GetAll(input.Page, input.Size, combinedCond, orders)
 	if err != nil {
 		h.App.ErrorLog.Println(err)
 		return nil, nil, errors.ErrInternalServer

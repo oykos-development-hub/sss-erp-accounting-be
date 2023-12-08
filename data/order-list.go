@@ -36,7 +36,7 @@ func (t *OrderList) Table() string {
 }
 
 // GetAll gets all records from the database, using upper
-func (t *OrderList) GetAll(page *int, size *int, conditions *up.AndExpr) ([]*OrderList, *uint64, error) {
+func (t *OrderList) GetAll(page *int, size *int, conditions *up.AndExpr, orders []interface{}) ([]*OrderList, *uint64, error) {
 	collection := upper.Collection(t.Table())
 	var all []*OrderList
 	var res up.Result
