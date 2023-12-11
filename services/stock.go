@@ -88,7 +88,7 @@ func (h *StockServiceImpl) GetStockList(input *dto.StockFilterDTO) ([]dto.StockR
 
 	if input.Title != nil {
 		titleFilter := *input.Title + "%"
-		conditionAndExp = up.And(conditionAndExp, &up.Cond{"title LIKE": titleFilter})
+		conditionAndExp = up.And(conditionAndExp, &up.Cond{"title ILIKE": titleFilter})
 	}
 
 	if input.Description != nil {

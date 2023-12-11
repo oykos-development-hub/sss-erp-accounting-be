@@ -14,7 +14,7 @@ type GetOrderListInputDTO struct {
 	Search              *string `json:"search"`
 	PublicProcurementID *int    `json:"public_procurement_id"`
 	OrganizationUnitID  *int    `json:"organization_unit_id"`
-	InvoiceDate         *string `json:"invoice_date"`
+	DateSystem          *string `json:"date_system"`
 	Year                *string `json:"year"`
 	SortByDateOrder     *string `json:"sort_by_date_order"`
 	SortByTotalPrice    *string `json:"sort_by_total_price"`
