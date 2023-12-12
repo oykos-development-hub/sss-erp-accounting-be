@@ -7,54 +7,43 @@ import (
 )
 
 type MovementArticleDTO struct {
-	MovementID  int    `json:"movement_id"`
-	Year        string `json:"year"`
-	Title       string `json:"title"`
-	Exception   bool   `json:"exception"`
-	Description string `json:"description"`
-	Amount      int    `json:"amount"`
+	MovementID int `json:"movement_id"`
+	Amount     int `json:"amount"`
+	StockID    int `json:"stock_id"`
 }
 
 type MovementArticleResponseDTO struct {
-	ID          int       `json:"id"`
-	MovementID  int       `json:"movement_id"`
-	Year        string    `json:"year"`
-	Exception   bool      `json:"exception"`
-	Title       string    `json:"title"`
-	Description string    `json:"description"`
-	Amount      int       `json:"amount"`
-	CreatedAt   time.Time `json:"created_at"`
-	UpdatedAt   time.Time `json:"updated_at"`
+	ID         int       `json:"id"`
+	MovementID int       `json:"movement_id"`
+	StockID    int       `json:"stock_id"`
+	Amount     int       `json:"amount"`
+	CreatedAt  time.Time `json:"created_at"`
+	UpdatedAt  time.Time `json:"updated_at"`
 }
 
 type MovementArticlesFilterDTO struct {
 	Page       *int `json:"page"`
 	Size       *int `json:"size"`
 	MovementID *int `json:"movement_id"`
+	StockID    *int `json:"stock_id"`
 }
 
 func (dto MovementArticleDTO) ToMovementArticle() *data.MovementArticle {
 	return &data.MovementArticle{
-		Year:        dto.Year,
-		Exception:   dto.Exception,
-		Title:       dto.Title,
-		Description: dto.Description,
-		Amount:      dto.Amount,
-		MovementID:  dto.MovementID,
+		StockID:    dto.StockID,
+		Amount:     dto.Amount,
+		MovementID: dto.MovementID,
 	}
 }
 
 func ToMovementArticleResponseDTO(data data.MovementArticle) MovementArticleResponseDTO {
 	return MovementArticleResponseDTO{
-		ID:          data.ID,
-		Year:        data.Year,
-		Description: data.Description,
-		Title:       data.Title,
-		Exception:   data.Exception,
-		Amount:      data.Amount,
-		MovementID:  data.MovementID,
-		CreatedAt:   data.CreatedAt,
-		UpdatedAt:   data.UpdatedAt,
+		ID:         data.ID,
+		StockID:    data.StockID,
+		Amount:     data.Amount,
+		MovementID: data.MovementID,
+		CreatedAt:  data.CreatedAt,
+		UpdatedAt:  data.UpdatedAt,
 	}
 }
 

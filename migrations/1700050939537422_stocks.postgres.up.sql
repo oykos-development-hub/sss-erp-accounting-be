@@ -5,6 +5,8 @@ CREATE TABLE IF NOT EXISTS stocks (
     year TEXT,
     exception BOOLEAN default false,
     amount INTEGER NOT NULL,
+    vat_percentage INTEGER,
+    net_price INTEGER,
     organization_unit_id INTEGER NOT NULL,
     created_at TIMESTAMP,
     updated_at TIMESTAMP

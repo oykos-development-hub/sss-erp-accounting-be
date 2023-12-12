@@ -117,11 +117,10 @@ func (t *Movement) Insert(m Movement) (int, error) {
 func (t *Movement) GetAllForReport(StartDate *string, EndDate *string, Title *string, OfficeID *int, Exception *bool, OrganizationUnitID *int) ([]ArticlesFilter, error) {
 	var all []ArticlesFilter
 
-	selectS := `SELECT a.year, a.title, a.description, sum(a.amount) as amount`
-	from := ` FROM movement_articles a, movements m`
-	where := ` WHERE a.movement_id = m.id`
-	groupBy := ` GROUP BY a.year, a.title, a.description`
-	orderBy := ` ORDER BY a.title asc`
+	selectS := `SELECT s.year, s.title, s.description, sum(a.amount) as amount 
+	FROM movement_articles a, movements m, stocks s 
+	WHERE a.movement_id = m.id AND s.id = a.stock_id `
+	groupBy := ` GROUP BY s.year, s.title, s.description ORDER BY s.title asc`
 
 	var filters []interface{}
 	var filterArgs []string
@@ -141,7 +140,7 @@ func (t *Movement) GetAllForReport(StartDate *string, EndDate *string, Title *st
 	if Title != nil && *Title != "" {
 		lowercaseTitle := strings.ToLower(*Title)
 		filters = append(filters, "%"+lowercaseTitle+"%")
-		filterArgs = append(filterArgs, "LOWER(a.title) LIKE $"+strconv.Itoa(len(filterArgs)+1))
+		filterArgs = append(filterArgs, "LOWER(s.title) LIKE $"+strconv.Itoa(len(filterArgs)+1))
 	}
 
 	if OfficeID != nil && *OfficeID != 0 {
@@ -151,19 +150,19 @@ func (t *Movement) GetAllForReport(StartDate *string, EndDate *string, Title *st
 
 	if Exception != nil {
 		filters = append(filters, Exception)
-		filterArgs = append(filterArgs, "a.exception = $"+strconv.Itoa(len(filterArgs)+1))
+		filterArgs = append(filterArgs, "s.exception = $"+strconv.Itoa(len(filterArgs)+1))
 	}
 
-	if OrganizationUnitID != nil {
-		selectS += ", m.office_id"
-		groupBy += ", m.office_id"
+	if OrganizationUnitID != nil && *OrganizationUnitID != 0 {
+		filters = append(filters, OrganizationUnitID)
+		filterArgs = append(filterArgs, "m.organization_unit_id = $"+strconv.Itoa(len(filterArgs)+1))
 	}
 
 	if len(filters) > 0 {
-		where += " AND " + strings.Join(filterArgs, " AND ")
+		selectS += " AND " + strings.Join(filterArgs, " AND ")
 	}
 
-	query := selectS + from + where + groupBy + orderBy
+	query := selectS + groupBy
 
 	rows, err := upper.SQL().Query(query, filters...)
 	if err != nil {
@@ -173,17 +172,11 @@ func (t *Movement) GetAllForReport(StartDate *string, EndDate *string, Title *st
 
 	for rows.Next() {
 		var article ArticlesFilter
-		if OrganizationUnitID != nil {
-			err := rows.Scan(&article.Year, &article.Title, &article.Description, &article.Amount, &article.OfficeID)
-			if err != nil {
-				return nil, err
-			}
-		} else {
-			err := rows.Scan(&article.Year, &article.Title, &article.Description, &article.Amount)
-			if err != nil {
-				return nil, err
-			}
+		err := rows.Scan(&article.Year, &article.Title, &article.Description, &article.Amount)
+		if err != nil {
+			return nil, err
 		}
+
 		all = append(all, article)
 	}
 

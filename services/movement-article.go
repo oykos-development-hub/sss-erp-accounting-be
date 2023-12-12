@@ -86,6 +86,10 @@ func (h *MovementArticleServiceImpl) GetMovementArticleList(input *dto.MovementA
 		conditionAndExp = up.And(conditionAndExp, &up.Cond{"movement_id": *input.MovementID})
 	}
 
+	if input.StockID != nil {
+		conditionAndExp = up.And(conditionAndExp, &up.Cond{"stock_id": *input.StockID})
+	}
+
 	data, total, err := h.repo.GetAll(input.Page, input.Size, conditionAndExp)
 	if err != nil {
 		h.App.ErrorLog.Println(err)

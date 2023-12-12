@@ -11,6 +11,8 @@ type Stock struct {
 	ID                 int       `db:"id,omitempty"`
 	Year               string    `db:"year"`
 	Title              string    `db:"title"`
+	NetPrice           float32   `db:"net_price"`
+	VatPercentage      int       `db:"vat_percentage"`
 	Description        string    `db:"description"`
 	OrganizationUnitID int       `db:"organization_unit_id"`
 	Amount             int       `db:"amount"`

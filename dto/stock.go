@@ -7,12 +7,14 @@ import (
 )
 
 type StockDTO struct {
-	Year               string `json:"year"`
-	Title              string `json:"title"`
-	Description        string `json:"description"`
-	Amount             int    `json:"amount"`
-	Exception          bool   `json:"exception"`
-	OrganizationUnitID int    `json:"organization_unit_id"`
+	Year               string  `json:"year"`
+	Title              string  `json:"title"`
+	Description        string  `json:"description"`
+	Amount             int     `json:"amount"`
+	Exception          bool    `json:"exception"`
+	NetPrice           float32 `json:"net_price"`
+	VatPercentage      int     `json:"vat_percentage"`
+	OrganizationUnitID int     `json:"organization_unit_id"`
 }
 
 type StockResponseDTO struct {
@@ -23,6 +25,8 @@ type StockResponseDTO struct {
 	OrganizationUnitID int       `json:"organization_unit_id"`
 	Amount             int       `json:"amount"`
 	Exception          bool      `json:"exception"`
+	NetPrice           float32   `json:"net_price"`
+	VatPercentage      int       `json:"vat_percentage"`
 	CreatedAt          time.Time `json:"created_at"`
 	UpdatedAt          time.Time `json:"updated_at"`
 }
@@ -45,6 +49,8 @@ func (dto StockDTO) ToStock() *data.Stock {
 		Year:               dto.Year,
 		Exception:          dto.Exception,
 		Amount:             dto.Amount,
+		NetPrice:           dto.NetPrice,
+		VatPercentage:      dto.VatPercentage,
 		OrganizationUnitID: dto.OrganizationUnitID,
 	}
 }
@@ -57,6 +63,8 @@ func ToStockResponseDTO(data data.Stock) StockResponseDTO {
 		Year:               data.Year,
 		Amount:             data.Amount,
 		Exception:          data.Exception,
+		NetPrice:           data.NetPrice,
+		VatPercentage:      data.VatPercentage,
 		OrganizationUnitID: data.OrganizationUnitID,
 		CreatedAt:          data.CreatedAt,
 		UpdatedAt:          data.UpdatedAt,

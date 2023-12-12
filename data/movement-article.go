@@ -8,15 +8,12 @@ import (
 
 // MovementArticle struct
 type MovementArticle struct {
-	ID          int       `db:"id,omitempty"`
-	Year        string    `db:"year"`
-	Title       string    `db:"title"`
-	Description string    `db:"description"`
-	Exception   bool      `db:"exception"`
-	MovementID  int       `db:"movement_id"`
-	Amount      int       `db:"amount"`
-	CreatedAt   time.Time `db:"created_at,omitempty"`
-	UpdatedAt   time.Time `db:"updated_at"`
+	ID         int       `db:"id,omitempty"`
+	MovementID int       `db:"movement_id"`
+	StockID    int       `db:"stock_id"`
+	Amount     int       `db:"amount"`
+	CreatedAt  time.Time `db:"created_at,omitempty"`
+	UpdatedAt  time.Time `db:"updated_at"`
 }
 
 // Table returns the table name
