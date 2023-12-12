@@ -157,8 +157,6 @@ func (t *Movement) GetAllForReport(StartDate *string, EndDate *string, Title *st
 	if OrganizationUnitID != nil {
 		selectS += ", m.office_id"
 		groupBy += ", m.office_id"
-		filters = append(filters, OrganizationUnitID)
-		filterArgs = append(filterArgs, "m.organization_unit_id = $"+strconv.Itoa(len(filterArgs)+1))
 	}
 
 	if len(filters) > 0 {
