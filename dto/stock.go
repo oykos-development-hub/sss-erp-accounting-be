@@ -32,14 +32,16 @@ type StockResponseDTO struct {
 }
 
 type StockFilterDTO struct {
-	Page               *int    `json:"page"`
-	Size               *int    `json:"size"`
-	Year               *string `json:"year"`
-	Title              *string `json:"title"`
-	Description        *string `json:"description"`
-	OrganizationUnitID *int    `json:"organization_unit_id"`
-	SortByYear         *string `json:"sort_by_year"`
-	SortByAmount       *string `json:"sort_by_amount"`
+	Page               *int     `json:"page"`
+	Size               *int     `json:"size"`
+	Year               *string  `json:"year"`
+	Title              *string  `json:"title"`
+	Description        *string  `json:"description"`
+	NetPrice           *float32 `json:"net_price"`
+	VatPercentage      *int     `json:"vat_percentage"`
+	OrganizationUnitID *int     `json:"organization_unit_id"`
+	SortByYear         *string  `json:"sort_by_year"`
+	SortByAmount       *string  `json:"sort_by_amount"`
 }
 
 func (dto StockDTO) ToStock() *data.Stock {

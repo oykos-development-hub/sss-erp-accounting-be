@@ -95,6 +95,14 @@ func (h *StockServiceImpl) GetStockList(input *dto.StockFilterDTO) ([]dto.StockR
 		conditionAndExp = up.And(conditionAndExp, &up.Cond{"description": *input.Description})
 	}
 
+	if input.NetPrice != nil {
+		conditionAndExp = up.And(conditionAndExp, &up.Cond{"net_price": *input.NetPrice})
+	}
+
+	if input.VatPercentage != nil {
+		conditionAndExp = up.And(conditionAndExp, &up.Cond{"vat_percentage": *input.VatPercentage})
+	}
+
 	if input.OrganizationUnitID != nil {
 		conditionAndExp = up.And(conditionAndExp, &up.Cond{"organization_unit_id": *input.OrganizationUnitID})
 	}
