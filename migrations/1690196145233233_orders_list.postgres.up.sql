@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS order_lists (
     group_of_articles_id INTEGER,
     description TEXT,
     order_file INTEGER,
-    receive_file INTEGER,
+    receive_file INTEGER[],
     movement_file INTEGER,
     created_at TIMESTAMP,
     updated_at TIMESTAMP
