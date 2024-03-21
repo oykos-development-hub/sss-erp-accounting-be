@@ -140,6 +140,13 @@ func (h *OrderListServiceImpl) GetOrderLists(input dto.GetOrderListInputDTO) ([]
 		conditions = append(conditions, cond)
 	}
 
+	if input.FinanceOverview != nil && *input.FinanceOverview {
+		cond := up.Cond{"passed_to_finance ": true}
+		conditions = append(conditions, cond)
+		cond = up.Cond{"used_in_finance ": false}
+		conditions = append(conditions, cond)
+	}
+
 	if len(conditions) > 0 {
 		combinedCond = up.And(conditions...)
 	}

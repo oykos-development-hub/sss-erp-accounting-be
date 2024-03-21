@@ -17,6 +17,7 @@ type GetOrderListInputDTO struct {
 	OrganizationUnitID  *int    `json:"organization_unit_id"`
 	DateSystem          *string `json:"date_system"`
 	Year                *string `json:"year"`
+	FinanceOverview     *bool   `json:"finance_overview"`
 	SortByDateOrder     *string `json:"sort_by_date_order"`
 	SortByTotalPrice    *string `json:"sort_by_total_price"`
 }
@@ -37,6 +38,8 @@ type OrderListDTO struct {
 	RecipientUserID     *int          `json:"recipient_user_id"`
 	Description         *string       `json:"description"`
 	OrderFile           *int          `json:"order_file"`
+	PassedToFinance     bool          `json:"passed_to_finance"`
+	UsedInFinance       bool          `json:"used_in_finance"`
 	ReceiveFile         pq.Int64Array `json:"receive_file"`
 	MovementFile        *int          `json:"movement_file"`
 }
@@ -57,6 +60,8 @@ type OrderListResponseDTO struct {
 	OfficeID            *int       `json:"office_id"`
 	RecipientUserID     *int       `json:"recipient_user_id"`
 	Description         *string    `json:"description"`
+	PassedToFinance     bool       `json:"passed_to_finance"`
+	UsedInFinance       bool       `json:"used_in_finance"`
 	OrderFile           *int       `json:"order_file"`
 	ReceiveFile         []int      `json:"receive_file"`
 	MovementFile        *int       `json:"movement_file"`
@@ -80,6 +85,8 @@ func (dto OrderListDTO) ToOrderList() *data.OrderList {
 		IsUsed:              dto.IsUsed,
 		RecipientUserID:     dto.RecipientUserID,
 		Description:         dto.Description,
+		PassedToFinance:     dto.PassedToFinance,
+		UsedInFinance:       dto.UsedInFinance,
 		OrderFile:           dto.OrderFile,
 		ReceiveFile:         dto.ReceiveFile,
 		MovementFile:        dto.MovementFile,
@@ -109,6 +116,8 @@ func ToOrderListResponseDTO(data data.OrderList) OrderListResponseDTO {
 		OfficeID:            data.OfficeID,
 		RecipientUserID:     data.RecipientUserID,
 		Description:         data.Description,
+		PassedToFinance:     data.PassedToFinance,
+		UsedInFinance:       data.UsedInFinance,
 		OrderFile:           data.OrderFile,
 		ReceiveFile:         array,
 		MovementFile:        data.MovementFile,

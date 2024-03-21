@@ -24,6 +24,8 @@ type OrderList struct {
 	OfficeID            *int          `db:"office_id"`
 	RecipientUserID     *int          `db:"recipient_user_id"`
 	Description         *string       `db:"description"`
+	PassedToFinance     bool          `db:"passed_to_finance"`
+	UsedInFinance       bool          `db:"used_in_finance"`
 	OrderFile           *int          `db:"order_file"`
 	ReceiveFile         pq.Int64Array `db:"receive_file"`
 	MovementFile        *int          `db:"movement_file"`

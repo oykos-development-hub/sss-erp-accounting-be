@@ -14,6 +14,8 @@ CREATE TABLE IF NOT EXISTS order_lists (
     recipient_user_id INTEGER,
     group_of_articles_id INTEGER,
     description TEXT,
+    passed_to_finance BOOLEAN DEFAULT false,
+    used_in_finance BOOLEAN DEFAULT false,
     order_file INTEGER,
     receive_file INTEGER[],
     movement_file INTEGER,
