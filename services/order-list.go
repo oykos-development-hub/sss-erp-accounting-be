@@ -71,6 +71,16 @@ func (h *OrderListServiceImpl) DeleteOrderList(id int) error {
 	return nil
 }
 
+func (h *OrderListServiceImpl) SendToFinance(id int) error {
+	err := h.repo.SendToFinance(id)
+	if err != nil {
+		h.App.ErrorLog.Println(err)
+		return errors.ErrInternalServer
+	}
+
+	return nil
+}
+
 func (h *OrderListServiceImpl) GetOrderList(id int) (*dto.OrderListResponseDTO, error) {
 	data, err := h.repo.Get(id)
 	if err != nil {

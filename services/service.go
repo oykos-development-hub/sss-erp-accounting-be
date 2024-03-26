@@ -14,6 +14,7 @@ type OrderListService interface {
 	CreateOrderList(input dto.OrderListDTO) (*dto.OrderListResponseDTO, error)
 	UpdateOrderList(id int, input dto.OrderListDTO) (*dto.OrderListResponseDTO, error)
 	DeleteOrderList(id int) error
+	SendToFinance(id int) error
 	GetOrderList(id int) (*dto.OrderListResponseDTO, error)
 	GetOrderLists(data dto.GetOrderListInputDTO) ([]dto.OrderListResponseDTO, *uint64, error)
 }

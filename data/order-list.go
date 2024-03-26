@@ -117,3 +117,15 @@ func (t *OrderList) Insert(m OrderList) (int, error) {
 
 	return id, nil
 }
+
+func (t *OrderList) SendToFinance(id int) error {
+	query := `update order_lists set passed_to_finance = true where id = $1`
+
+	rows, err := upper.SQL().Query(query, id)
+	if err != nil {
+		return err
+	}
+	defer rows.Close()
+
+	return nil
+}

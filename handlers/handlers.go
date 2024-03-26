@@ -13,6 +13,7 @@ type Handlers struct {
 type OrderListHandler interface {
 	CreateOrderList(w http.ResponseWriter, r *http.Request)
 	UpdateOrderList(w http.ResponseWriter, r *http.Request)
+	SendToFinance(w http.ResponseWriter, r *http.Request)
 	DeleteOrderList(w http.ResponseWriter, r *http.Request)
 	GetOrderListById(w http.ResponseWriter, r *http.Request)
 	GetOrderLists(w http.ResponseWriter, r *http.Request)

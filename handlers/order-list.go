@@ -73,6 +73,18 @@ func (h *OrderListHandlerImpl) UpdateOrderList(w http.ResponseWriter, r *http.Re
 	_ = h.App.WriteDataResponse(w, http.StatusOK, "OrderList updated successfuly", res)
 }
 
+func (h *OrderListHandlerImpl) SendToFinance(w http.ResponseWriter, r *http.Request) {
+	id, _ := strconv.Atoi(chi.URLParam(r, "id"))
+
+	err := h.service.SendToFinance(id)
+	if err != nil {
+		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
+		return
+	}
+
+	_ = h.App.WriteDataResponse(w, http.StatusOK, "OrderList updated successfuly", nil)
+}
+
 func (h *OrderListHandlerImpl) DeleteOrderList(w http.ResponseWriter, r *http.Request) {
 	id, _ := strconv.Atoi(chi.URLParam(r, "id"))
 

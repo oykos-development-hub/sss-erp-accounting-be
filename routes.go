@@ -20,6 +20,7 @@ func routes(app *celeritas.Celeritas, middleware *middleware.Middleware, handler
 		rt.Get("/order-lists", handlers.OrderListHandler.GetOrderLists)
 		rt.Put("/order-lists/{id}", handlers.OrderListHandler.UpdateOrderList)
 		rt.Delete("/order-lists/{id}", handlers.OrderListHandler.DeleteOrderList)
+		rt.Put("/order-list-send-to-finance/{id}", handlers.OrderListHandler.SendToFinance)
 
 		// order procurement article
 		rt.Post("/order-procurement-articles", handlers.OrderProcurementArticleHandler.CreateOrderProcurementArticle)
