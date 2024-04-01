@@ -9,28 +9,32 @@ import (
 
 // Order list struct
 type OrderList struct {
-	ID                  int           `db:"id,omitempty"`
-	DateOrder           time.Time     `db:"date_order"`
-	TotalPrice          float32       `db:"total_price"`
-	PublicProcurementID *int          `db:"public_procurement_id"`
-	SupplierID          *int          `db:"supplier_id"`
-	IsUsed              bool          `db:"is_used"`
-	Status              string        `db:"status"`
-	DateSystem          *time.Time    `db:"date_system"`
-	InvoiceDate         *time.Time    `db:"invoice_date"`
-	InvoiceNumber       *string       `db:"invoice_number"`
-	OrganizationUnitID  int           `db:"organization_unit_id"`
-	GroupOfArticlesID   *int          `db:"group_of_articles_id"`
-	OfficeID            *int          `db:"office_id"`
-	RecipientUserID     *int          `db:"recipient_user_id"`
-	Description         *string       `db:"description"`
-	PassedToFinance     bool          `db:"passed_to_finance"`
-	UsedInFinance       bool          `db:"used_in_finance"`
-	OrderFile           *int          `db:"order_file"`
-	ReceiveFile         pq.Int64Array `db:"receive_file"`
-	MovementFile        *int          `db:"movement_file"`
-	CreatedAt           time.Time     `db:"created_at,omitempty"`
-	UpdatedAt           time.Time     `db:"updated_at"`
+	ID                    int           `db:"id,omitempty"`
+	DateOrder             time.Time     `db:"date_order"`
+	TotalPrice            float32       `db:"total_price"`
+	PublicProcurementID   *int          `db:"public_procurement_id"`
+	SupplierID            *int          `db:"supplier_id"`
+	IsUsed                bool          `db:"is_used"`
+	Status                string        `db:"status"`
+	DateSystem            *time.Time    `db:"date_system"`
+	ProFormaInvoiceDate   time.Time     `db:"pro_forma_invoice_date"`
+	ProFormaInvoiceNumber string        `db:"pro_forma_invoice_number"`
+	InvoiceDate           *time.Time    `db:"invoice_date"`
+	InvoiceNumber         *string       `db:"invoice_number"`
+	OrganizationUnitID    int           `db:"organization_unit_id"`
+	GroupOfArticlesID     *int          `db:"group_of_articles_id"`
+	OfficeID              *int          `db:"office_id"`
+	AccountID             *int          `db:"account_id"`
+	RecipientUserID       *int          `db:"recipient_user_id"`
+	Description           *string       `db:"description"`
+	PassedToFinance       bool          `db:"passed_to_finance"`
+	UsedInFinance         bool          `db:"used_in_finance"`
+	IsProFormaInvoice     bool          `db:"is_pro_forma_invoice"`
+	OrderFile             *int          `db:"order_file"`
+	ReceiveFile           pq.Int64Array `db:"receive_file"`
+	MovementFile          *int          `db:"movement_file"`
+	CreatedAt             time.Time     `db:"created_at,omitempty"`
+	UpdatedAt             time.Time     `db:"updated_at"`
 }
 
 // Table returns the table name
