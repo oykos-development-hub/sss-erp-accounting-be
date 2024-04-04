@@ -32,7 +32,7 @@ type OrderListDTO struct {
 	DateSystem            *time.Time    `json:"date_system"`
 	GroupOfArticlesID     *int          `json:"group_of_articles_id"`
 	InvoiceDate           *time.Time    `json:"invoice_date"`
-	ProFormaInvoiceDate   time.Time     `json:"pro_forma_invoice_date"`
+	ProFormaInvoiceDate   *time.Time    `json:"pro_forma_invoice_date"`
 	ProFormaInvoiceNumber string        `json:"pro_forma_invoice_number"`
 	InvoiceNumber         *string       `json:"invoice_number"`
 	OrganizationUnitID    int           `json:"organization_unit_id"`
@@ -59,7 +59,7 @@ type OrderListResponseDTO struct {
 	IsUsed                bool       `json:"is_used"`
 	DateSystem            *time.Time `json:"date_system"`
 	InvoiceDate           *time.Time `json:"invoice_date"`
-	ProFormaInvoiceDate   time.Time  `json:"pro_forma_invoice_date"`
+	ProFormaInvoiceDate   *time.Time `json:"pro_forma_invoice_date"`
 	ProFormaInvoiceNumber string     `json:"pro_forma_invoice_number"`
 	InvoiceNumber         *string    `json:"invoice_number"`
 	OrganizationUnitID    int        `json:"organization_unit_id"`

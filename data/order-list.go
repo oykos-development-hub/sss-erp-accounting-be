@@ -17,7 +17,7 @@ type OrderList struct {
 	IsUsed                bool          `db:"is_used"`
 	Status                string        `db:"status"`
 	DateSystem            *time.Time    `db:"date_system"`
-	ProFormaInvoiceDate   time.Time     `db:"pro_forma_invoice_date"`
+	ProFormaInvoiceDate   *time.Time    `db:"pro_forma_invoice_date"`
 	ProFormaInvoiceNumber string        `db:"pro_forma_invoice_number"`
 	InvoiceDate           *time.Time    `db:"invoice_date"`
 	InvoiceNumber         *string       `db:"invoice_number"`
