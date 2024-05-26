@@ -78,6 +78,13 @@ type OrderListResponseDTO struct {
 }
 
 func (dto OrderListDTO) ToOrderList() *data.OrderList {
+
+	isProFormaInvoice := false
+
+	if dto.InvoiceNumber != nil {
+		isProFormaInvoice = true
+	}
+
 	return &data.OrderList{
 		DateOrder:             dto.DateOrder,
 		TotalPrice:            dto.TotalPrice,
@@ -98,7 +105,7 @@ func (dto OrderListDTO) ToOrderList() *data.OrderList {
 		Description:           dto.Description,
 		PassedToFinance:       dto.PassedToFinance,
 		UsedInFinance:         dto.UsedInFinance,
-		IsProFormaInvoice:     dto.IsProFormaInvoice,
+		IsProFormaInvoice:     isProFormaInvoice,
 		OrderFile:             dto.OrderFile,
 		ReceiveFile:           dto.ReceiveFile,
 		MovementFile:          dto.MovementFile,
@@ -110,6 +117,12 @@ func ToOrderListResponseDTO(data data.OrderList) OrderListResponseDTO {
 	array := make([]int, len(data.ReceiveFile))
 	for i, id := range data.ReceiveFile {
 		array[i] = int(id)
+	}
+
+	isProFormaInvoice := false
+
+	if data.InvoiceNumber != nil {
+		isProFormaInvoice = true
 	}
 
 	return OrderListResponseDTO{
@@ -133,7 +146,7 @@ func ToOrderListResponseDTO(data data.OrderList) OrderListResponseDTO {
 		Description:           data.Description,
 		PassedToFinance:       data.PassedToFinance,
 		UsedInFinance:         data.UsedInFinance,
-		IsProFormaInvoice:     data.IsProFormaInvoice,
+		IsProFormaInvoice:     isProFormaInvoice,
 		OrderFile:             data.OrderFile,
 		ReceiveFile:           array,
 		MovementFile:          data.MovementFile,
