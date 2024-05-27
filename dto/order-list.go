@@ -81,7 +81,7 @@ func (dto OrderListDTO) ToOrderList() *data.OrderList {
 
 	isProFormaInvoice := false
 
-	if dto.InvoiceNumber != nil {
+	if dto.InvoiceNumber != nil && *dto.InvoiceNumber != "" {
 		isProFormaInvoice = true
 	}
 
@@ -121,7 +121,7 @@ func ToOrderListResponseDTO(data data.OrderList) OrderListResponseDTO {
 
 	isProFormaInvoice := false
 
-	if data.InvoiceNumber != nil {
+	if data.InvoiceNumber != nil && *data.InvoiceNumber != "" {
 		isProFormaInvoice = true
 	}
 
