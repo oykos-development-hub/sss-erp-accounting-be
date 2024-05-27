@@ -79,10 +79,10 @@ type OrderListResponseDTO struct {
 
 func (dto OrderListDTO) ToOrderList() *data.OrderList {
 
-	isProFormaInvoice := false
+	isProFormaInvoice := true
 
 	if dto.InvoiceNumber != nil && *dto.InvoiceNumber != "" {
-		isProFormaInvoice = true
+		isProFormaInvoice = false
 	}
 
 	return &data.OrderList{
@@ -119,10 +119,10 @@ func ToOrderListResponseDTO(data data.OrderList) OrderListResponseDTO {
 		array[i] = int(id)
 	}
 
-	isProFormaInvoice := false
+	isProFormaInvoice := true
 
 	if data.InvoiceNumber != nil && *data.InvoiceNumber != "" {
-		isProFormaInvoice = true
+		isProFormaInvoice = false
 	}
 
 	return OrderListResponseDTO{
