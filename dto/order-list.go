@@ -40,6 +40,9 @@ type OrderListDTO struct {
 	AccountID             *int          `json:"account_id"`
 	RecipientUserID       *int          `json:"recipient_user_id"`
 	Description           *string       `json:"description"`
+	DeliveryDate          *time.Time    `json:"delivery_date"`
+	DeliveryNumber        string        `json:"delivery_number"`
+	DeliveryFileID        *int          `json:"delivery_file_id"`
 	OrderFile             *int          `json:"order_file"`
 	PassedToFinance       bool          `json:"passed_to_finance"`
 	UsedInFinance         bool          `json:"used_in_finance"`
@@ -67,6 +70,9 @@ type OrderListResponseDTO struct {
 	AccountID             *int       `json:"account_id"`
 	RecipientUserID       *int       `json:"recipient_user_id"`
 	Description           *string    `json:"description"`
+	DeliveryDate          *time.Time `json:"delivery_date"`
+	DeliveryNumber        string     `json:"delivery_number"`
+	DeliveryFileID        *int       `json:"delivery_file_id"`
 	PassedToFinance       bool       `json:"passed_to_finance"`
 	UsedInFinance         bool       `json:"used_in_finance"`
 	IsProFormaInvoice     bool       `json:"is_pro_forma_invoice"`
@@ -95,6 +101,9 @@ func (dto OrderListDTO) ToOrderList() *data.OrderList {
 		OfficeID:              dto.OfficeID,
 		AccountID:             dto.AccountID,
 		IsUsed:                dto.IsUsed,
+		DeliveryDate:          dto.DeliveryDate,
+		DeliveryNumber:        dto.DeliveryNumber,
+		DeliveryFileID:        dto.DeliveryFileID,
 		RecipientUserID:       dto.RecipientUserID,
 		Description:           dto.Description,
 		PassedToFinance:       dto.PassedToFinance,
@@ -130,6 +139,9 @@ func ToOrderListResponseDTO(data data.OrderList) OrderListResponseDTO {
 		InvoiceNumber:         data.InvoiceNumber,
 		OrganizationUnitID:    data.OrganizationUnitID,
 		OfficeID:              data.OfficeID,
+		DeliveryDate:          data.DeliveryDate,
+		DeliveryNumber:        data.DeliveryNumber,
+		DeliveryFileID:        data.DeliveryFileID,
 		RecipientUserID:       data.RecipientUserID,
 		Description:           data.Description,
 		PassedToFinance:       data.PassedToFinance,

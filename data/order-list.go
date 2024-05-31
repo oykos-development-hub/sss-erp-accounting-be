@@ -30,6 +30,9 @@ type OrderList struct {
 	PassedToFinance       bool          `db:"passed_to_finance"`
 	UsedInFinance         bool          `db:"used_in_finance"`
 	IsProFormaInvoice     bool          `db:"is_pro_forma_invoice"`
+	DeliveryDate          *time.Time    `db:"delivery_date"`
+	DeliveryNumber        string        `db:"delivery_number"`
+	DeliveryFileID        *int          `db:"delivery_file_id"`
 	OrderFile             *int          `db:"order_file"`
 	ReceiveFile           pq.Int64Array `db:"receive_file"`
 	MovementFile          *int          `db:"movement_file"`
