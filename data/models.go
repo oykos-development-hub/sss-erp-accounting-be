@@ -15,7 +15,7 @@ import (
 var db *sql.DB
 
 //nolint:all
-var upper up.Session
+var Upper up.Session
 
 type Models struct {
 	OrderList               OrderList
@@ -23,6 +23,7 @@ type Models struct {
 	Movement                Movement
 	Stock                   Stock
 	MovementArticle         MovementArticle
+	Log                     Log
 }
 
 func New(databasePool *sql.DB) Models {
@@ -30,9 +31,9 @@ func New(databasePool *sql.DB) Models {
 
 	switch os.Getenv("DATABASE_TYPE") {
 	case "mysql", "mariadb":
-		upper, _ = mysql.New(databasePool)
+		Upper, _ = mysql.New(databasePool)
 	case "postgres", "postgresql":
-		upper, _ = postgresql.New(databasePool)
+		Upper, _ = postgresql.New(databasePool)
 	default:
 		// do nothing
 	}
@@ -43,6 +44,7 @@ func New(databasePool *sql.DB) Models {
 		Movement:                Movement{},
 		Stock:                   Stock{},
 		MovementArticle:         MovementArticle{},
+		Log:                     Log{},
 	}
 }
 

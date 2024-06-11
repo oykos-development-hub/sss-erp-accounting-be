@@ -8,7 +8,8 @@ type Handlers struct {
 	MovementHandler                MovementHandler
 	StockHandler                   StockHandler
 	MovementArticleHandler         MovementArticleHandler
-}
+	LogHandler LogHandler
+	}
 
 type OrderListHandler interface {
 	CreateOrderList(w http.ResponseWriter, r *http.Request)
@@ -50,4 +51,12 @@ type MovementArticleHandler interface {
 	DeleteMovementArticle(w http.ResponseWriter, r *http.Request)
 	GetMovementArticleById(w http.ResponseWriter, r *http.Request)
 	GetMovementArticleList(w http.ResponseWriter, r *http.Request)
+}
+
+type LogHandler interface {
+	CreateLog(w http.ResponseWriter, r *http.Request)
+	UpdateLog(w http.ResponseWriter, r *http.Request)
+	DeleteLog(w http.ResponseWriter, r *http.Request)
+	GetLogById(w http.ResponseWriter, r *http.Request)
+	GetLogList(w http.ResponseWriter, r *http.Request)
 }

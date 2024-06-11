@@ -26,9 +26,9 @@ func (t *OrderProcurementArticle) Table() string {
 	return "order_procurement_articles"
 }
 
-// GetAll gets all records from the database, using upper
+// GetAll gets all records from the database, using Upper
 func (t *OrderProcurementArticle) GetAll(page *int, size *int, conditions *up.AndExpr) ([]*OrderProcurementArticle, *uint64, error) {
-	collection := upper.Collection(t.Table())
+	collection := Upper.Collection(t.Table())
 	var all []*OrderProcurementArticle
 	var res up.Result
 
@@ -55,10 +55,10 @@ func (t *OrderProcurementArticle) GetAll(page *int, size *int, conditions *up.An
 	return all, &total, err
 }
 
-// Get gets one record from the database, by id, using upper
+// Get gets one record from the database, by id, using Upper
 func (t *OrderProcurementArticle) Get(id int) (*OrderProcurementArticle, error) {
 	var one OrderProcurementArticle
-	collection := upper.Collection(t.Table())
+	collection := Upper.Collection(t.Table())
 
 	res := collection.Find(up.Cond{"id": id})
 	err := res.One(&one)
@@ -68,10 +68,10 @@ func (t *OrderProcurementArticle) Get(id int) (*OrderProcurementArticle, error) 
 	return &one, nil
 }
 
-// Update updates a record in the database, using upper
+// Update updates a record in the database, using Upper
 func (t *OrderProcurementArticle) Update(m OrderProcurementArticle) error {
 	m.UpdatedAt = time.Now()
-	collection := upper.Collection(t.Table())
+	collection := Upper.Collection(t.Table())
 	res := collection.Find(m.ID)
 	err := res.Update(&m)
 	if err != nil {
@@ -80,9 +80,9 @@ func (t *OrderProcurementArticle) Update(m OrderProcurementArticle) error {
 	return nil
 }
 
-// Delete deletes a record from the database by id, using upper
+// Delete deletes a record from the database by id, using Upper
 func (t *OrderProcurementArticle) Delete(id int) error {
-	collection := upper.Collection(t.Table())
+	collection := Upper.Collection(t.Table())
 	res := collection.Find(id)
 	err := res.Delete()
 	if err != nil {
@@ -91,11 +91,11 @@ func (t *OrderProcurementArticle) Delete(id int) error {
 	return nil
 }
 
-// Insert inserts a model into the database, using upper
+// Insert inserts a model into the database, using Upper
 func (t *OrderProcurementArticle) Insert(m OrderProcurementArticle) (int, error) {
 	m.CreatedAt = time.Now()
 	m.UpdatedAt = time.Now()
-	collection := upper.Collection(t.Table())
+	collection := Upper.Collection(t.Table())
 	res, err := collection.Insert(m)
 	if err != nil {
 		return 0, err

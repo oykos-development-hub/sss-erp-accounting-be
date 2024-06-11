@@ -1,6 +1,8 @@
 package services
 
 import (
+	"context"
+
 	"gitlab.sudovi.me/erp/accounting-api/data"
 	"gitlab.sudovi.me/erp/accounting-api/dto"
 	"gitlab.sudovi.me/erp/accounting-api/errors"
@@ -21,10 +23,10 @@ func NewMovementServiceImpl(app *celeritas.Celeritas, repo data.Movement) Moveme
 	}
 }
 
-func (h *MovementServiceImpl) CreateMovement(input dto.MovementDTO) (*dto.MovementResponseDTO, error) {
+func (h *MovementServiceImpl) CreateMovement(ctx context.Context, input dto.MovementDTO) (*dto.MovementResponseDTO, error) {
 	data := input.ToMovement()
 
-	id, err := h.repo.Insert(*data)
+	id, err := h.repo.Insert(ctx, *data)
 	if err != nil {
 		return nil, errors.ErrInternalServer
 	}
@@ -39,11 +41,11 @@ func (h *MovementServiceImpl) CreateMovement(input dto.MovementDTO) (*dto.Moveme
 	return &res, nil
 }
 
-func (h *MovementServiceImpl) UpdateMovement(id int, input dto.MovementDTO) (*dto.MovementResponseDTO, error) {
+func (h *MovementServiceImpl) UpdateMovement(ctx context.Context, id int, input dto.MovementDTO) (*dto.MovementResponseDTO, error) {
 	data := input.ToMovement()
 	data.ID = id
 
-	err := h.repo.Update(*data)
+	err := h.repo.Update(ctx, *data)
 	if err != nil {
 		return nil, errors.ErrInternalServer
 	}
@@ -58,8 +60,8 @@ func (h *MovementServiceImpl) UpdateMovement(id int, input dto.MovementDTO) (*dt
 	return &response, nil
 }
 
-func (h *MovementServiceImpl) DeleteMovement(id int) error {
-	err := h.repo.Delete(id)
+func (h *MovementServiceImpl) DeleteMovement(ctx context.Context, id int) error {
+	err := h.repo.Delete(ctx, id)
 	if err != nil {
 		h.App.ErrorLog.Println(err)
 		return errors.ErrInternalServer

@@ -1,6 +1,7 @@
 package services
 
 import (
+	"context"
 	"fmt"
 	"strconv"
 	"time"
@@ -24,10 +25,10 @@ func NewOrderListServiceImpl(app *celeritas.Celeritas, repo data.OrderList) Orde
 	}
 }
 
-func (h *OrderListServiceImpl) CreateOrderList(input dto.OrderListDTO) (*dto.OrderListResponseDTO, error) {
+func (h *OrderListServiceImpl) CreateOrderList(ctx context.Context, input dto.OrderListDTO) (*dto.OrderListResponseDTO, error) {
 	data := input.ToOrderList()
 
-	id, err := h.repo.Insert(*data)
+	id, err := h.repo.Insert(ctx, *data)
 	if err != nil {
 		return nil, errors.ErrInternalServer
 	}
@@ -42,11 +43,11 @@ func (h *OrderListServiceImpl) CreateOrderList(input dto.OrderListDTO) (*dto.Ord
 	return &res, nil
 }
 
-func (h *OrderListServiceImpl) UpdateOrderList(id int, input dto.OrderListDTO) (*dto.OrderListResponseDTO, error) {
+func (h *OrderListServiceImpl) UpdateOrderList(ctx context.Context, id int, input dto.OrderListDTO) (*dto.OrderListResponseDTO, error) {
 	data := input.ToOrderList()
 	data.ID = id
 
-	err := h.repo.Update(*data)
+	err := h.repo.Update(ctx, *data)
 	if err != nil {
 		return nil, errors.ErrInternalServer
 	}
@@ -61,8 +62,8 @@ func (h *OrderListServiceImpl) UpdateOrderList(id int, input dto.OrderListDTO) (
 	return &response, nil
 }
 
-func (h *OrderListServiceImpl) DeleteOrderList(id int) error {
-	err := h.repo.Delete(id)
+func (h *OrderListServiceImpl) DeleteOrderList(ctx context.Context, id int) error {
+	err := h.repo.Delete(ctx, id)
 	if err != nil {
 		h.App.ErrorLog.Println(err)
 		return errors.ErrInternalServer
@@ -71,8 +72,8 @@ func (h *OrderListServiceImpl) DeleteOrderList(id int) error {
 	return nil
 }
 
-func (h *OrderListServiceImpl) SendToFinance(id int) error {
-	err := h.repo.SendToFinance(id)
+func (h *OrderListServiceImpl) SendToFinance(ctx context.Context, id int) error {
+	err := h.repo.SendToFinance(ctx, id)
 	if err != nil {
 		h.App.ErrorLog.Println(err)
 		return errors.ErrInternalServer

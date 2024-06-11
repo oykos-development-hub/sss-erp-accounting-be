@@ -1,35 +1,47 @@
 package data
 
 import (
+	"encoding/json"
 	"time"
 
 	up "github.com/upper/db/v4"
 )
 
-// Stock struct
-type Stock struct {
-	ID                 int       `db:"id,omitempty"`
-	Year               string    `db:"year"`
-	Title              string    `db:"title"`
-	NetPrice           float32   `db:"net_price"`
-	VatPercentage      int       `db:"vat_percentage"`
-	Description        string    `db:"description"`
-	OrganizationUnitID int       `db:"organization_unit_id"`
-	Amount             int       `db:"amount"`
-	Exception          bool      `db:"exception"`
-	CreatedAt          time.Time `db:"created_at,omitempty"`
-	UpdatedAt          time.Time `db:"updated_at"`
+type LogOperation string
+type LogEntity string
+
+var (
+	OperationInsert LogOperation = "INSERT"
+	OperationUpdate LogOperation = "UPDATE"
+	OperationDelete LogOperation = "DELETE"
+)
+
+var (
+	EntityOrganzationUnit LogEntity = "order_lists"
+	EntityJobPositions    LogEntity = "movements"
+)
+
+// Log struct
+type Log struct {
+	ID        int             `db:"id,omitempty"`
+	ChangedAt time.Time       `db:"changed_at"`
+	UserID    int             `db:"user_id"`
+	ItemID    int             `db:"item_id"`
+	Operation LogOperation    `db:"operation"`
+	Entity    LogEntity       `db:"entity"`
+	OldState  json.RawMessage `db:"old_state"`
+	NewState  json.RawMessage `db:"new_state"`
 }
 
 // Table returns the table name
-func (t *Stock) Table() string {
-	return "stocks"
+func (t *Log) Table() string {
+	return "logs"
 }
 
 // GetAll gets all records from the database, using Upper
-func (t *Stock) GetAll(page *int, size *int, condition *up.AndExpr, orders []interface{}) ([]*Stock, *uint64, error) {
+func (t *Log) GetAll(page *int, size *int, condition *up.AndExpr, orders []interface{}) ([]*Log, *uint64, error) {
 	collection := Upper.Collection(t.Table())
-	var all []*Stock
+	var all []*Log
 	var res up.Result
 
 	if condition != nil {
@@ -37,7 +49,6 @@ func (t *Stock) GetAll(page *int, size *int, condition *up.AndExpr, orders []int
 	} else {
 		res = collection.Find()
 	}
-
 	total, err := res.Count()
 	if err != nil {
 		return nil, nil, err
@@ -56,8 +67,8 @@ func (t *Stock) GetAll(page *int, size *int, condition *up.AndExpr, orders []int
 }
 
 // Get gets one record from the database, by id, using Upper
-func (t *Stock) Get(id int) (*Stock, error) {
-	var one Stock
+func (t *Log) Get(id int) (*Log, error) {
+	var one Log
 	collection := Upper.Collection(t.Table())
 
 	res := collection.Find(up.Cond{"id": id})
@@ -69,8 +80,7 @@ func (t *Stock) Get(id int) (*Stock, error) {
 }
 
 // Update updates a record in the database, using Upper
-func (t *Stock) Update(m Stock) error {
-	m.UpdatedAt = time.Now()
+func (t *Log) Update(m Log) error {
 	collection := Upper.Collection(t.Table())
 	res := collection.Find(m.ID)
 	err := res.Update(&m)
@@ -81,7 +91,7 @@ func (t *Stock) Update(m Stock) error {
 }
 
 // Delete deletes a record from the database by id, using Upper
-func (t *Stock) Delete(id int) error {
+func (t *Log) Delete(id int) error {
 	collection := Upper.Collection(t.Table())
 	res := collection.Find(id)
 	err := res.Delete()
@@ -92,9 +102,7 @@ func (t *Stock) Delete(id int) error {
 }
 
 // Insert inserts a model into the database, using Upper
-func (t *Stock) Insert(m Stock) (int, error) {
-	m.CreatedAt = time.Now()
-	m.UpdatedAt = time.Now()
+func (t *Log) Insert(m Log) (int, error) {
 	collection := Upper.Collection(t.Table())
 	res, err := collection.Insert(m)
 	if err != nil {

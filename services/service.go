@@ -1,6 +1,8 @@
 package services
 
 import (
+	"context"
+
 	"gitlab.sudovi.me/erp/accounting-api/dto"
 )
 
@@ -11,10 +13,10 @@ type BaseService interface {
 }
 
 type OrderListService interface {
-	CreateOrderList(input dto.OrderListDTO) (*dto.OrderListResponseDTO, error)
-	UpdateOrderList(id int, input dto.OrderListDTO) (*dto.OrderListResponseDTO, error)
-	DeleteOrderList(id int) error
-	SendToFinance(id int) error
+	CreateOrderList(ctx context.Context, input dto.OrderListDTO) (*dto.OrderListResponseDTO, error)
+	UpdateOrderList(ctx context.Context,id int, input dto.OrderListDTO) (*dto.OrderListResponseDTO, error)
+	DeleteOrderList(ctx context.Context,id int) error
+	SendToFinance(ctx context.Context, id int) error
 	GetOrderList(id int) (*dto.OrderListResponseDTO, error)
 	GetOrderLists(data dto.GetOrderListInputDTO) ([]dto.OrderListResponseDTO, *uint64, error)
 }
@@ -28,9 +30,9 @@ type OrderProcurementArticleService interface {
 }
 
 type MovementService interface {
-	CreateMovement(input dto.MovementDTO) (*dto.MovementResponseDTO, error)
-	UpdateMovement(id int, input dto.MovementDTO) (*dto.MovementResponseDTO, error)
-	DeleteMovement(id int) error
+	CreateMovement(ctx context.Context,input dto.MovementDTO) (*dto.MovementResponseDTO, error)
+	UpdateMovement(ctx context.Context, id int, input dto.MovementDTO) (*dto.MovementResponseDTO, error)
+	DeleteMovement(ctx context.Context, id int) error
 	GetMovement(id int) (*dto.MovementResponseDTO, error)
 	GetMovementList(*dto.MovementFilterDTO) ([]dto.MovementResponseDTO, *uint64, error)
 	GetMovementReport(*dto.MovementReportFilterDTO) ([]dto.ArticlesFilterDTO, error)
@@ -50,4 +52,12 @@ type MovementArticleService interface {
 	DeleteMovementArticle(id int) error
 	GetMovementArticle(id int) (*dto.MovementArticleResponseDTO, error)
 	GetMovementArticleList(input *dto.MovementArticlesFilterDTO) ([]dto.MovementArticleResponseDTO, *uint64, error)
+}
+
+type LogService interface {
+	CreateLog(input dto.LogDTO) (*dto.LogResponseDTO, error)
+	UpdateLog(id int, input dto.LogDTO) (*dto.LogResponseDTO, error)
+	DeleteLog(id int) error
+	GetLog(id int) (*dto.LogResponseDTO, error)
+	GetLogList(filter dto.LogFilterDTO) ([]dto.LogResponseDTO, *uint64, error)
 }
