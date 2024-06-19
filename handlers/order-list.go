@@ -31,12 +31,14 @@ func (h *OrderListHandlerImpl) CreateOrderList(w http.ResponseWriter, r *http.Re
 	var input dto.OrderListDTO
 	err := h.App.ReadJSON(w, r, &input)
 	if err != nil {
+		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, http.StatusBadRequest, err)
 		return
 	}
 
 	validator := h.App.Validator().ValidateStruct(&input)
 	if !validator.Valid() {
+		h.App.ErrorLog.Print(validator.Errors)
 		_ = h.App.WriteErrorResponseWithData(w, errors.MapErrorToStatusCode(errors.ErrBadRequest), errors.ErrBadRequest, validator.Errors)
 		return
 	}
@@ -46,7 +48,8 @@ func (h *OrderListHandlerImpl) CreateOrderList(w http.ResponseWriter, r *http.Re
 	userID, err := strconv.Atoi(userIDString)
 
 	if err != nil {
-		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(errors.ErrUnauthorized), errors.ErrBadRequest)
+		h.App.ErrorLog.Print(err)
+		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(errors.ErrUnauthorized), errors.ErrUnauthorized)
 		return
 	}
 
@@ -55,6 +58,7 @@ func (h *OrderListHandlerImpl) CreateOrderList(w http.ResponseWriter, r *http.Re
 
 	res, err := h.service.CreateOrderList(ctx, input)
 	if err != nil {
+		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}
@@ -68,12 +72,14 @@ func (h *OrderListHandlerImpl) UpdateOrderList(w http.ResponseWriter, r *http.Re
 	var input dto.OrderListDTO
 	err := h.App.ReadJSON(w, r, &input)
 	if err != nil {
+		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, http.StatusBadRequest, err)
 		return
 	}
 
 	validator := h.App.Validator().ValidateStruct(&input)
 	if !validator.Valid() {
+		h.App.ErrorLog.Print(validator.Errors)
 		_ = h.App.WriteErrorResponseWithData(w, errors.MapErrorToStatusCode(errors.ErrBadRequest), errors.ErrBadRequest, validator.Errors)
 		return
 	}
@@ -83,7 +89,8 @@ func (h *OrderListHandlerImpl) UpdateOrderList(w http.ResponseWriter, r *http.Re
 	userID, err := strconv.Atoi(userIDString)
 
 	if err != nil {
-		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(errors.ErrUnauthorized), errors.ErrBadRequest)
+		h.App.ErrorLog.Print(err)
+		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(errors.ErrUnauthorized), errors.ErrUnauthorized)
 		return
 	}
 
@@ -92,6 +99,7 @@ func (h *OrderListHandlerImpl) UpdateOrderList(w http.ResponseWriter, r *http.Re
 
 	res, err := h.service.UpdateOrderList(ctx, id, input)
 	if err != nil {
+		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}
@@ -107,7 +115,8 @@ func (h *OrderListHandlerImpl) SendToFinance(w http.ResponseWriter, r *http.Requ
 	userID, err := strconv.Atoi(userIDString)
 
 	if err != nil {
-		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(errors.ErrUnauthorized), errors.ErrBadRequest)
+		h.App.ErrorLog.Print(err)
+		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(errors.ErrUnauthorized), errors.ErrUnauthorized)
 		return
 	}
 
@@ -116,6 +125,7 @@ func (h *OrderListHandlerImpl) SendToFinance(w http.ResponseWriter, r *http.Requ
 
 	err = h.service.SendToFinance(ctx, id)
 	if err != nil {
+		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}
@@ -131,7 +141,8 @@ func (h *OrderListHandlerImpl) DeleteOrderList(w http.ResponseWriter, r *http.Re
 	userID, err := strconv.Atoi(userIDString)
 
 	if err != nil {
-		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(errors.ErrUnauthorized), errors.ErrBadRequest)
+		h.App.ErrorLog.Print(err)
+		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(errors.ErrUnauthorized), errors.ErrUnauthorized)
 		return
 	}
 
@@ -140,6 +151,7 @@ func (h *OrderListHandlerImpl) DeleteOrderList(w http.ResponseWriter, r *http.Re
 
 	err = h.service.DeleteOrderList(ctx, id)
 	if err != nil {
+		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}
@@ -152,6 +164,7 @@ func (h *OrderListHandlerImpl) GetOrderListById(w http.ResponseWriter, r *http.R
 
 	res, err := h.service.GetOrderList(id)
 	if err != nil {
+		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}
@@ -163,18 +176,21 @@ func (h *OrderListHandlerImpl) GetOrderLists(w http.ResponseWriter, r *http.Requ
 	var input dto.GetOrderListInputDTO
 	err := h.App.ReadJSON(w, r, &input)
 	if err != nil {
+		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, http.StatusBadRequest, err)
 		return
 	}
 
 	validator := h.App.Validator().ValidateStruct(&input)
 	if !validator.Valid() {
+		h.App.ErrorLog.Print(validator.Errors)
 		_ = h.App.WriteErrorResponseWithData(w, errors.MapErrorToStatusCode(errors.ErrBadRequest), errors.ErrBadRequest, validator.Errors)
 		return
 	}
 
 	res, total, err := h.service.GetOrderLists(input)
 	if err != nil {
+		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}

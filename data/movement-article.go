@@ -4,6 +4,7 @@ import (
 	"time"
 
 	up "github.com/upper/db/v4"
+	newErrors "gitlab.sudovi.me/erp/accounting-api/pkg/errors"
 )
 
 // MovementArticle struct
@@ -35,7 +36,7 @@ func (t *MovementArticle) GetAll(page *int, size *int, condition *up.AndExpr) ([
 
 	total, err := res.Count()
 	if err != nil {
-		return nil, nil, err
+		return nil, nil, newErrors.Wrap(err, "upper count")
 	}
 
 	if page != nil && size != nil {
@@ -44,7 +45,7 @@ func (t *MovementArticle) GetAll(page *int, size *int, condition *up.AndExpr) ([
 
 	err = res.OrderBy("created_at desc").All(&all)
 	if err != nil {
-		return nil, nil, err
+		return nil, nil, newErrors.Wrap(err, "upper order by")
 	}
 
 	return all, &total, err
@@ -58,7 +59,7 @@ func (t *MovementArticle) Get(id int) (*MovementArticle, error) {
 	res := collection.Find(up.Cond{"id": id})
 	err := res.One(&one)
 	if err != nil {
-		return nil, err
+		return nil, newErrors.Wrap(err, "upper get")
 	}
 	return &one, nil
 }
@@ -70,7 +71,7 @@ func (t *MovementArticle) Update(m MovementArticle) error {
 	res := collection.Find(m.ID)
 	err := res.Update(&m)
 	if err != nil {
-		return err
+		return newErrors.Wrap(err, "upper update")
 	}
 	return nil
 }
@@ -81,7 +82,7 @@ func (t *MovementArticle) Delete(id int) error {
 	res := collection.Find(id)
 	err := res.Delete()
 	if err != nil {
-		return err
+		return newErrors.Wrap(err, "upper delete")
 	}
 	return nil
 }
@@ -93,7 +94,7 @@ func (t *MovementArticle) Insert(m MovementArticle) (int, error) {
 	collection := Upper.Collection(t.Table())
 	res, err := collection.Insert(m)
 	if err != nil {
-		return 0, err
+		return 0, newErrors.Wrap(err, "upper insert")
 	}
 
 	id := getInsertId(res.ID())

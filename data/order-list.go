@@ -9,6 +9,7 @@ import (
 	"github.com/lib/pq"
 	up "github.com/upper/db/v4"
 	"gitlab.sudovi.me/erp/accounting-api/contextutil"
+	newErrors "gitlab.sudovi.me/erp/accounting-api/pkg/errors"
 )
 
 // Order list struct
@@ -63,7 +64,7 @@ func (t *OrderList) GetAll(page *int, size *int, conditions *up.AndExpr, orders 
 
 	total, err := res.Count()
 	if err != nil {
-		return nil, nil, err
+		return nil, nil, newErrors.Wrap(err, "upper count")
 	}
 
 	if page != nil && size != nil {
@@ -72,7 +73,7 @@ func (t *OrderList) GetAll(page *int, size *int, conditions *up.AndExpr, orders 
 
 	err = res.OrderBy(orders...).All(&all)
 	if err != nil {
-		return nil, nil, err
+		return nil, nil, newErrors.Wrap(err, "upper order")
 	}
 
 	return all, &total, err
@@ -86,7 +87,7 @@ func (t *OrderList) Get(id int) (*OrderList, error) {
 	res := collection.Find(up.Cond{"id": id})
 	err := res.One(&one)
 	if err != nil {
-		return nil, err
+		return nil, newErrors.Wrap(err, "upper get")
 	}
 	return &one, nil
 }
@@ -103,13 +104,13 @@ func (t *OrderList) Update(ctx context.Context, m OrderList) error {
 
 		query := fmt.Sprintf("SET myapp.user_id = %d", userID)
 		if _, err := sess.SQL().Exec(query); err != nil {
-			return err
+			return newErrors.Wrap(err, "upper exec")
 		}
 
 		collection := sess.Collection(t.Table())
 		res := collection.Find(m.ID)
 		if err := res.Update(&m); err != nil {
-			return err
+			return newErrors.Wrap(err, "upper update")
 		}
 
 		return nil
@@ -131,13 +132,13 @@ func (t *OrderList) Delete(ctx context.Context, id int) error {
 	err := Upper.Tx(func(sess up.Session) error {
 		query := fmt.Sprintf("SET myapp.user_id = %d", userID)
 		if _, err := sess.SQL().Exec(query); err != nil {
-			return err
+			return newErrors.Wrap(err, "upper exec")
 		}
 
 		collection := sess.Collection(t.Table())
 		res := collection.Find(id)
 		if err := res.Delete(); err != nil {
-			return err
+			return newErrors.Wrap(err, "upper delete")
 		}
 
 		return nil
@@ -164,7 +165,7 @@ func (t *OrderList) Insert(ctx context.Context, m OrderList) (int, error) {
 
 		query := fmt.Sprintf("SET myapp.user_id = %d", userID)
 		if _, err := sess.SQL().Exec(query); err != nil {
-			return err
+			return newErrors.Wrap(err, "upper exec")
 		}
 
 		collection := sess.Collection(t.Table())
@@ -173,7 +174,7 @@ func (t *OrderList) Insert(ctx context.Context, m OrderList) (int, error) {
 		var err error
 
 		if res, err = collection.Insert(m); err != nil {
-			return err
+			return newErrors.Wrap(err, "upper insert")
 		}
 
 		id = getInsertId(res.ID())
@@ -199,7 +200,7 @@ func (t *OrderList) SendToFinance(ctx context.Context, id int) error {
 		// Set the user_id variable
 		query := fmt.Sprintf("SET myapp.user_id = %d", userID)
 		if _, err := sess.SQL().Exec(query); err != nil {
-			return err
+			return newErrors.Wrap(err, "upper exec")
 		}
 
 		query = `update order_lists set passed_to_finance = true where id = $1`

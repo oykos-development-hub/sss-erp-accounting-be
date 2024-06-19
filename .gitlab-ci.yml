@@ -22,11 +22,12 @@ code_tests:
 
 code_linter:
     stage: test
-    image: golangci/golangci-lint:v1.50.1
+    image: golangci/golangci-lint:latest
     before_script:
         - go mod download
     script:
-        - golangci-lint run ./...
+        - golangci-lint run --timeout=10m ./...
+
 
 push_to_github:
   stage: push_to_github

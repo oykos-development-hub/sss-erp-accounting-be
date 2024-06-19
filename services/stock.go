@@ -3,7 +3,7 @@ package services
 import (
 	"gitlab.sudovi.me/erp/accounting-api/data"
 	"gitlab.sudovi.me/erp/accounting-api/dto"
-	"gitlab.sudovi.me/erp/accounting-api/errors"
+	newErrors "gitlab.sudovi.me/erp/accounting-api/pkg/errors"
 
 	"github.com/oykos-development-hub/celeritas"
 	up "github.com/upper/db/v4"
@@ -26,12 +26,12 @@ func (h *StockServiceImpl) CreateStock(input dto.StockDTO) (*dto.StockResponseDT
 
 	id, err := h.repo.Insert(*data)
 	if err != nil {
-		return nil, errors.ErrInternalServer
+		return nil, newErrors.Wrap(err, "repo stock insert")
 	}
 
 	data, err = data.Get(id)
 	if err != nil {
-		return nil, errors.ErrInternalServer
+		return nil, newErrors.Wrap(err, "repo stock get")
 	}
 
 	res := dto.ToStockResponseDTO(*data)
@@ -45,12 +45,12 @@ func (h *StockServiceImpl) UpdateStock(id int, input dto.StockDTO) (*dto.StockRe
 
 	err := h.repo.Update(*data)
 	if err != nil {
-		return nil, errors.ErrInternalServer
+		return nil, newErrors.Wrap(err, "repo stock get")
 	}
 
 	data, err = h.repo.Get(id)
 	if err != nil {
-		return nil, errors.ErrInternalServer
+		return nil, newErrors.Wrap(err, "repo stock get")
 	}
 
 	response := dto.ToStockResponseDTO(*data)
@@ -61,8 +61,7 @@ func (h *StockServiceImpl) UpdateStock(id int, input dto.StockDTO) (*dto.StockRe
 func (h *StockServiceImpl) DeleteStock(id int) error {
 	err := h.repo.Delete(id)
 	if err != nil {
-		h.App.ErrorLog.Println(err)
-		return errors.ErrInternalServer
+		return newErrors.Wrap(err, "repo stock delete")
 	}
 
 	return nil
@@ -71,8 +70,7 @@ func (h *StockServiceImpl) DeleteStock(id int) error {
 func (h *StockServiceImpl) GetStock(id int) (*dto.StockResponseDTO, error) {
 	data, err := h.repo.Get(id)
 	if err != nil {
-		h.App.ErrorLog.Println(err)
-		return nil, errors.ErrNotFound
+		return nil, newErrors.Wrap(err, "repo stock get")
 	}
 	response := dto.ToStockResponseDTO(*data)
 
@@ -130,8 +128,7 @@ func (h *StockServiceImpl) GetStockList(input *dto.StockFilterDTO) ([]dto.StockR
 	data, total, err := h.repo.GetAll(input.Page, input.Size, conditionAndExp, orders)
 
 	if err != nil {
-		h.App.ErrorLog.Println(err)
-		return nil, nil, errors.ErrInternalServer
+		return nil, nil, newErrors.Wrap(err, "repo stock get all")
 	}
 	response := dto.ToStockListResponseDTO(data)
 

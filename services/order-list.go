@@ -10,7 +10,7 @@ import (
 	up "github.com/upper/db/v4"
 	"gitlab.sudovi.me/erp/accounting-api/data"
 	"gitlab.sudovi.me/erp/accounting-api/dto"
-	"gitlab.sudovi.me/erp/accounting-api/errors"
+	newErrors "gitlab.sudovi.me/erp/accounting-api/pkg/errors"
 )
 
 type OrderListServiceImpl struct {
@@ -30,12 +30,12 @@ func (h *OrderListServiceImpl) CreateOrderList(ctx context.Context, input dto.Or
 
 	id, err := h.repo.Insert(ctx, *data)
 	if err != nil {
-		return nil, errors.ErrInternalServer
+		return nil, newErrors.Wrap(err, "repo order list get")
 	}
 
 	data, err = data.Get(id)
 	if err != nil {
-		return nil, errors.ErrInternalServer
+		return nil, newErrors.Wrap(err, "repo order list get")
 	}
 
 	res := dto.ToOrderListResponseDTO(*data)
@@ -49,12 +49,12 @@ func (h *OrderListServiceImpl) UpdateOrderList(ctx context.Context, id int, inpu
 
 	err := h.repo.Update(ctx, *data)
 	if err != nil {
-		return nil, errors.ErrInternalServer
+		return nil, newErrors.Wrap(err, "repo order list insert")
 	}
 
 	data, err = h.repo.Get(id)
 	if err != nil {
-		return nil, errors.ErrInternalServer
+		return nil, newErrors.Wrap(err, "repo order list get")
 	}
 
 	response := dto.ToOrderListResponseDTO(*data)
@@ -65,8 +65,7 @@ func (h *OrderListServiceImpl) UpdateOrderList(ctx context.Context, id int, inpu
 func (h *OrderListServiceImpl) DeleteOrderList(ctx context.Context, id int) error {
 	err := h.repo.Delete(ctx, id)
 	if err != nil {
-		h.App.ErrorLog.Println(err)
-		return errors.ErrInternalServer
+		return newErrors.Wrap(err, "repo order list delete")
 	}
 
 	return nil
@@ -75,8 +74,7 @@ func (h *OrderListServiceImpl) DeleteOrderList(ctx context.Context, id int) erro
 func (h *OrderListServiceImpl) SendToFinance(ctx context.Context, id int) error {
 	err := h.repo.SendToFinance(ctx, id)
 	if err != nil {
-		h.App.ErrorLog.Println(err)
-		return errors.ErrInternalServer
+		return newErrors.Wrap(err, "repo order list send to finance")
 	}
 
 	return nil
@@ -85,8 +83,7 @@ func (h *OrderListServiceImpl) SendToFinance(ctx context.Context, id int) error 
 func (h *OrderListServiceImpl) GetOrderList(id int) (*dto.OrderListResponseDTO, error) {
 	data, err := h.repo.Get(id)
 	if err != nil {
-		h.App.ErrorLog.Println(err)
-		return nil, errors.ErrNotFound
+		return nil, newErrors.Wrap(err, "repo order list get")
 	}
 	response := dto.ToOrderListResponseDTO(*data)
 
@@ -184,8 +181,7 @@ func (h *OrderListServiceImpl) GetOrderLists(input dto.GetOrderListInputDTO) ([]
 
 	res, total, err := h.repo.GetAll(input.Page, input.Size, combinedCond, orders)
 	if err != nil {
-		h.App.ErrorLog.Println(err)
-		return nil, nil, errors.ErrInternalServer
+		return nil, nil, newErrors.Wrap(err, "repo order list get all")
 	}
 	response := dto.ToOrderListListResponseDTO(res)
 

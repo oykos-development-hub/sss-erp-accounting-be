@@ -5,7 +5,7 @@ import (
 
 	"gitlab.sudovi.me/erp/accounting-api/data"
 	"gitlab.sudovi.me/erp/accounting-api/dto"
-	"gitlab.sudovi.me/erp/accounting-api/errors"
+	newErrors "gitlab.sudovi.me/erp/accounting-api/pkg/errors"
 
 	"github.com/oykos-development-hub/celeritas"
 	up "github.com/upper/db/v4"
@@ -28,12 +28,12 @@ func (h *MovementServiceImpl) CreateMovement(ctx context.Context, input dto.Move
 
 	id, err := h.repo.Insert(ctx, *data)
 	if err != nil {
-		return nil, errors.ErrInternalServer
+		return nil, newErrors.Wrap(err, "repo movement insert")
 	}
 
 	data, err = data.Get(id)
 	if err != nil {
-		return nil, errors.ErrInternalServer
+		return nil, newErrors.Wrap(err, "repo movement get")
 	}
 
 	res := dto.ToMovementResponseDTO(*data)
@@ -47,12 +47,12 @@ func (h *MovementServiceImpl) UpdateMovement(ctx context.Context, id int, input 
 
 	err := h.repo.Update(ctx, *data)
 	if err != nil {
-		return nil, errors.ErrInternalServer
+		return nil, newErrors.Wrap(err, "repo movement insert")
 	}
 
 	data, err = h.repo.Get(id)
 	if err != nil {
-		return nil, errors.ErrInternalServer
+		return nil, newErrors.Wrap(err, "repo movement get")
 	}
 
 	response := dto.ToMovementResponseDTO(*data)
@@ -63,8 +63,7 @@ func (h *MovementServiceImpl) UpdateMovement(ctx context.Context, id int, input 
 func (h *MovementServiceImpl) DeleteMovement(ctx context.Context, id int) error {
 	err := h.repo.Delete(ctx, id)
 	if err != nil {
-		h.App.ErrorLog.Println(err)
-		return errors.ErrInternalServer
+		return newErrors.Wrap(err, "repo movement delete")
 	}
 
 	return nil
@@ -73,8 +72,7 @@ func (h *MovementServiceImpl) DeleteMovement(ctx context.Context, id int) error 
 func (h *MovementServiceImpl) GetMovement(id int) (*dto.MovementResponseDTO, error) {
 	data, err := h.repo.Get(id)
 	if err != nil {
-		h.App.ErrorLog.Println(err)
-		return nil, errors.ErrNotFound
+		return nil, newErrors.Wrap(err, "repo movement get")
 	}
 	response := dto.ToMovementResponseDTO(*data)
 
@@ -106,8 +104,7 @@ func (h *MovementServiceImpl) GetMovementList(input *dto.MovementFilterDTO) ([]d
 
 	data, total, err := h.repo.GetAll(input.Page, input.Size, conditionAndExp, orders)
 	if err != nil {
-		h.App.ErrorLog.Println(err)
-		return nil, nil, errors.ErrInternalServer
+		return nil, nil, newErrors.Wrap(err, "repo movement get all")
 	}
 	response := dto.ToMovementListResponseDTO(data)
 
@@ -118,8 +115,7 @@ func (h *MovementServiceImpl) GetMovementReport(input *dto.MovementReportFilterD
 
 	data, err := h.repo.GetAllForReport(input.StartDate, input.EndDate, input.Title, input.OfficeID, input.Exception, input.OrganizationUnitID)
 	if err != nil {
-		h.App.ErrorLog.Println(err)
-		return nil, errors.ErrInternalServer
+		return nil, newErrors.Wrap(err, "repo movement get all for report")
 	}
 
 	var response []dto.ArticlesFilterDTO
