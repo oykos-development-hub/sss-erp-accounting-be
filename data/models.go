@@ -24,7 +24,8 @@ type Models struct {
 	Stock                   Stock
 	MovementArticle         MovementArticle
 	Log                     Log
-}
+	ErrorLog ErrorLog
+	}
 
 func New(databasePool *sql.DB) Models {
 	db = databasePool
@@ -45,6 +46,7 @@ func New(databasePool *sql.DB) Models {
 		Stock:                   Stock{},
 		MovementArticle:         MovementArticle{},
 		Log:                     Log{},
+		ErrorLog: ErrorLog{},
 	}
 }
 

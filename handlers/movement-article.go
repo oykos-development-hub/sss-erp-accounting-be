@@ -14,15 +14,17 @@ import (
 
 // MovementArticleHandler is a concrete type that implements MovementArticleHandler
 type movementarticleHandlerImpl struct {
-	App     *celeritas.Celeritas
-	service services.MovementArticleService
+	App             *celeritas.Celeritas
+	service         services.MovementArticleService
+	errorLogService services.ErrorLogService
 }
 
 // NewMovementArticleHandler initializes a new MovementArticleHandler with its dependencies
-func NewMovementArticleHandler(app *celeritas.Celeritas, movementarticleService services.MovementArticleService) MovementArticleHandler {
+func NewMovementArticleHandler(app *celeritas.Celeritas, movementarticleService services.MovementArticleService, errorLogService services.ErrorLogService) MovementArticleHandler {
 	return &movementarticleHandlerImpl{
-		App:     app,
-		service: movementarticleService,
+		App:             app,
+		service:         movementarticleService,
+		errorLogService: errorLogService,
 	}
 }
 
@@ -30,6 +32,7 @@ func (h *movementarticleHandlerImpl) CreateMovementArticle(w http.ResponseWriter
 	var input dto.MovementArticleDTO
 	err := h.App.ReadJSON(w, r, &input)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, http.StatusBadRequest, err)
 		return
@@ -44,6 +47,7 @@ func (h *movementarticleHandlerImpl) CreateMovementArticle(w http.ResponseWriter
 
 	res, err := h.service.CreateMovementArticle(input)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
@@ -58,6 +62,7 @@ func (h *movementarticleHandlerImpl) UpdateMovementArticle(w http.ResponseWriter
 	var input dto.MovementArticleDTO
 	err := h.App.ReadJSON(w, r, &input)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, http.StatusBadRequest, err)
 		return
@@ -72,6 +77,7 @@ func (h *movementarticleHandlerImpl) UpdateMovementArticle(w http.ResponseWriter
 
 	res, err := h.service.UpdateMovementArticle(id, input)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
@@ -85,6 +91,7 @@ func (h *movementarticleHandlerImpl) DeleteMovementArticle(w http.ResponseWriter
 
 	err := h.service.DeleteMovementArticle(id)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
@@ -98,6 +105,7 @@ func (h *movementarticleHandlerImpl) GetMovementArticleById(w http.ResponseWrite
 
 	res, err := h.service.GetMovementArticle(id)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
@@ -110,6 +118,7 @@ func (h *movementarticleHandlerImpl) GetMovementArticleList(w http.ResponseWrite
 	var input dto.MovementArticlesFilterDTO
 	err := h.App.ReadJSON(w, r, &input)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, http.StatusBadRequest, err)
 		return
@@ -117,6 +126,7 @@ func (h *movementarticleHandlerImpl) GetMovementArticleList(w http.ResponseWrite
 
 	res, total, err := h.service.GetMovementArticleList(&input)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return

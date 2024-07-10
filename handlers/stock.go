@@ -14,15 +14,17 @@ import (
 
 // StockHandler is a concrete type that implements StockHandler
 type stockHandlerImpl struct {
-	App     *celeritas.Celeritas
-	service services.StockService
+	App             *celeritas.Celeritas
+	service         services.StockService
+	errorLogService services.ErrorLogService
 }
 
 // NewStockHandler initializes a new StockHandler with its dependencies
-func NewStockHandler(app *celeritas.Celeritas, stockService services.StockService) StockHandler {
+func NewStockHandler(app *celeritas.Celeritas, stockService services.StockService, errorLogService services.ErrorLogService) StockHandler {
 	return &stockHandlerImpl{
-		App:     app,
-		service: stockService,
+		App:             app,
+		service:         stockService,
+		errorLogService: errorLogService,
 	}
 }
 
@@ -31,6 +33,7 @@ func (h *stockHandlerImpl) CreateStock(w http.ResponseWriter, r *http.Request) {
 	var input dto.StockDTO
 	err := h.App.ReadJSON(w, r, &input)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, http.StatusBadRequest, err)
 		return
@@ -45,6 +48,7 @@ func (h *stockHandlerImpl) CreateStock(w http.ResponseWriter, r *http.Request) {
 
 	res, err := h.service.CreateStock(input)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
@@ -59,6 +63,7 @@ func (h *stockHandlerImpl) UpdateStock(w http.ResponseWriter, r *http.Request) {
 	var input dto.StockDTO
 	err := h.App.ReadJSON(w, r, &input)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, http.StatusBadRequest, err)
 		return
@@ -73,6 +78,7 @@ func (h *stockHandlerImpl) UpdateStock(w http.ResponseWriter, r *http.Request) {
 
 	res, err := h.service.UpdateStock(id, input)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
@@ -86,6 +92,7 @@ func (h *stockHandlerImpl) DeleteStock(w http.ResponseWriter, r *http.Request) {
 
 	err := h.service.DeleteStock(id)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
@@ -99,6 +106,7 @@ func (h *stockHandlerImpl) GetStockById(w http.ResponseWriter, r *http.Request) 
 
 	res, err := h.service.GetStock(id)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
@@ -111,6 +119,7 @@ func (h *stockHandlerImpl) GetStockList(w http.ResponseWriter, r *http.Request) 
 	var input dto.StockFilterDTO
 	err := h.App.ReadJSON(w, r, &input)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, http.StatusBadRequest, err)
 		return
@@ -118,6 +127,7 @@ func (h *stockHandlerImpl) GetStockList(w http.ResponseWriter, r *http.Request) 
 
 	res, total, err := h.service.GetStockList(&input)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return

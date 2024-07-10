@@ -13,15 +13,17 @@ import (
 
 // OrderProcurementArticleHandler is a concrete type that implements OrderProcurementArticleHandler
 type OrderProcurementArticleHandlerImpl struct {
-	App     *celeritas.Celeritas
-	service services.OrderProcurementArticleService
+	App             *celeritas.Celeritas
+	service         services.OrderProcurementArticleService
+	errorLogService services.ErrorLogService
 }
 
 // NewOrderProcurementArticleHandler initializes a new OrderProcurementArticleHandler with its dependencies
-func NewOrderProcurementArticleHandler(app *celeritas.Celeritas, OrderProcurementArticleService services.OrderProcurementArticleService) OrderProcurementArticleHandler {
+func NewOrderProcurementArticleHandler(app *celeritas.Celeritas, OrderProcurementArticleService services.OrderProcurementArticleService, errorLogService services.ErrorLogService) OrderProcurementArticleHandler {
 	return &OrderProcurementArticleHandlerImpl{
-		App:     app,
-		service: OrderProcurementArticleService,
+		App:             app,
+		service:         OrderProcurementArticleService,
+		errorLogService: errorLogService,
 	}
 }
 
@@ -29,6 +31,7 @@ func (h *OrderProcurementArticleHandlerImpl) CreateOrderProcurementArticle(w htt
 	var input dto.OrderProcurementArticleDTO
 	err := h.App.ReadJSON(w, r, &input)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, http.StatusBadRequest, err)
 		return
@@ -43,6 +46,7 @@ func (h *OrderProcurementArticleHandlerImpl) CreateOrderProcurementArticle(w htt
 
 	res, err := h.service.CreateOrderProcurementArticle(input)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
@@ -57,6 +61,7 @@ func (h *OrderProcurementArticleHandlerImpl) UpdateOrderProcurementArticle(w htt
 	var input dto.OrderProcurementArticleDTO
 	err := h.App.ReadJSON(w, r, &input)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, http.StatusBadRequest, err)
 		return
@@ -71,6 +76,7 @@ func (h *OrderProcurementArticleHandlerImpl) UpdateOrderProcurementArticle(w htt
 
 	res, err := h.service.UpdateOrderProcurementArticle(id, input)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
@@ -84,6 +90,7 @@ func (h *OrderProcurementArticleHandlerImpl) DeleteOrderProcurementArticle(w htt
 
 	err := h.service.DeleteOrderProcurementArticle(id)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
@@ -97,6 +104,7 @@ func (h *OrderProcurementArticleHandlerImpl) GetOrderProcurementArticleById(w ht
 
 	res, err := h.service.GetOrderProcurementArticle(id)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
@@ -109,6 +117,7 @@ func (h *OrderProcurementArticleHandlerImpl) GetOrderProcurementArticles(w http.
 	var input dto.GetOrderProcurementArticleInputDTO
 	err := h.App.ReadJSON(w, r, &input)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, http.StatusBadRequest, err)
 		return
@@ -123,6 +132,7 @@ func (h *OrderProcurementArticleHandlerImpl) GetOrderProcurementArticles(w http.
 
 	res, total, err := h.service.GetOrderProcurementArticles(input)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return

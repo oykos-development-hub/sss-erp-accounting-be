@@ -29,23 +29,26 @@ func initApplication() *celeritas.Celeritas {
 
 	models := data.New(cel.DB.Pool)
 
+	ErrorLogService := services.NewErrorLogServiceImpl(cel, models.ErrorLog)
+	ErrorLogHandler := handlers.NewErrorLogHandler(cel, ErrorLogService)
+
 	OrderListService := services.NewOrderListServiceImpl(cel, models.OrderList)
-	OrderListHandler := handlers.NewOrderListHandler(cel, OrderListService)
+	OrderListHandler := handlers.NewOrderListHandler(cel, OrderListService, ErrorLogService)
 
 	OrderProcurementArticleService := services.NewOrderProcurementArticleServiceImpl(cel, models.OrderProcurementArticle)
-	OrderProcurementArticleHandler := handlers.NewOrderProcurementArticleHandler(cel, OrderProcurementArticleService)
+	OrderProcurementArticleHandler := handlers.NewOrderProcurementArticleHandler(cel, OrderProcurementArticleService, ErrorLogService)
 
 	MovementService := services.NewMovementServiceImpl(cel, models.Movement)
-	MovementHandler := handlers.NewMovementHandler(cel, MovementService)
+	MovementHandler := handlers.NewMovementHandler(cel, MovementService, ErrorLogService)
 
 	StockService := services.NewStockServiceImpl(cel, models.Stock)
-	StockHandler := handlers.NewStockHandler(cel, StockService)
+	StockHandler := handlers.NewStockHandler(cel, StockService, ErrorLogService)
 
 	MovementArticleService := services.NewMovementArticleServiceImpl(cel, models.MovementArticle)
-	MovementArticleHandler := handlers.NewMovementArticleHandler(cel, MovementArticleService)
+	MovementArticleHandler := handlers.NewMovementArticleHandler(cel, MovementArticleService, ErrorLogService)
 
 	LogService := services.NewLogServiceImpl(cel, models.Log)
-	LogHandler := handlers.NewLogHandler(cel, LogService)
+	LogHandler := handlers.NewLogHandler(cel, LogService, ErrorLogService)
 
 	myHandlers := &handlers.Handlers{
 		OrderListHandler:               OrderListHandler,
@@ -54,6 +57,7 @@ func initApplication() *celeritas.Celeritas {
 		StockHandler:                   StockHandler,
 		MovementArticleHandler:         MovementArticleHandler,
 		LogHandler:                     LogHandler,
+		ErrorLogHandler:                ErrorLogHandler,
 	}
 
 	myMiddleware := &middleware.Middleware{

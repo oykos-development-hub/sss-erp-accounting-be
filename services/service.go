@@ -14,8 +14,8 @@ type BaseService interface {
 
 type OrderListService interface {
 	CreateOrderList(ctx context.Context, input dto.OrderListDTO) (*dto.OrderListResponseDTO, error)
-	UpdateOrderList(ctx context.Context,id int, input dto.OrderListDTO) (*dto.OrderListResponseDTO, error)
-	DeleteOrderList(ctx context.Context,id int) error
+	UpdateOrderList(ctx context.Context, id int, input dto.OrderListDTO) (*dto.OrderListResponseDTO, error)
+	DeleteOrderList(ctx context.Context, id int) error
 	SendToFinance(ctx context.Context, id int) error
 	GetOrderList(id int) (*dto.OrderListResponseDTO, error)
 	GetOrderLists(data dto.GetOrderListInputDTO) ([]dto.OrderListResponseDTO, *uint64, error)
@@ -30,7 +30,7 @@ type OrderProcurementArticleService interface {
 }
 
 type MovementService interface {
-	CreateMovement(ctx context.Context,input dto.MovementDTO) (*dto.MovementResponseDTO, error)
+	CreateMovement(ctx context.Context, input dto.MovementDTO) (*dto.MovementResponseDTO, error)
 	UpdateMovement(ctx context.Context, id int, input dto.MovementDTO) (*dto.MovementResponseDTO, error)
 	DeleteMovement(ctx context.Context, id int) error
 	GetMovement(id int) (*dto.MovementResponseDTO, error)
@@ -60,4 +60,12 @@ type LogService interface {
 	DeleteLog(id int) error
 	GetLog(id int) (*dto.LogResponseDTO, error)
 	GetLogList(filter dto.LogFilterDTO) ([]dto.LogResponseDTO, *uint64, error)
+}
+
+type ErrorLogService interface {
+	CreateErrorLog(err error)
+	UpdateErrorLog(id int, input dto.ErrorLogDTO) (*dto.ErrorLogResponseDTO, error)
+	DeleteErrorLog(id int) error
+	GetErrorLog(id int) (*dto.ErrorLogResponseDTO, error)
+	GetErrorLogList(filter dto.ErrorLogFilterDTO) ([]dto.ErrorLogResponseDTO, *uint64, error)
 }
