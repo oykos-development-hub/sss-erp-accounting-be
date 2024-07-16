@@ -32,7 +32,7 @@ type OrderList struct {
 	AccountID             *int          `db:"account_id"`
 	RecipientUserID       *int          `db:"recipient_user_id"`
 	Description           *string       `db:"description"`
-	PassedToFinance       bool          `db:"passed_to_finance"`
+	PassedToFinance       bool          `db:"passed_to_finance,omitempty"`
 	UsedInFinance         bool          `db:"used_in_finance"`
 	IsProFormaInvoice     bool          `db:"is_pro_forma_invoice"`
 	DeliveryDate          *time.Time    `db:"delivery_date"`

@@ -44,7 +44,6 @@ type OrderListDTO struct {
 	DeliveryNumber        string        `json:"delivery_number"`
 	DeliveryFileID        *int          `json:"delivery_file_id"`
 	OrderFile             *int          `json:"order_file"`
-	PassedToFinance       bool          `json:"passed_to_finance"`
 	UsedInFinance         bool          `json:"used_in_finance"`
 	IsProFormaInvoice     bool          `json:"is_pro_forma_invoice"`
 	ReceiveFile           pq.Int64Array `json:"receive_file"`
@@ -106,7 +105,6 @@ func (dto OrderListDTO) ToOrderList() *data.OrderList {
 		DeliveryFileID:        dto.DeliveryFileID,
 		RecipientUserID:       dto.RecipientUserID,
 		Description:           dto.Description,
-		PassedToFinance:       dto.PassedToFinance,
 		UsedInFinance:         dto.UsedInFinance,
 		IsProFormaInvoice:     dto.IsProFormaInvoice,
 		OrderFile:             dto.OrderFile,
