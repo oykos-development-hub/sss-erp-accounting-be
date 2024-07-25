@@ -69,11 +69,16 @@ func (t *Stock) GetAllForReport(date time.Time, organizationUnitID *int) ([]*Sto
 			      movement_articles ma ON s.id = ma.stock_id AND ma.created_at < $1 
 			  WHERE 
 			      s.created_at < $1
-			      AND ($2 IS NULL OR s.organization_unit_id = $2)
+			      AND ($2 = 0 OR s.organization_unit_id = $2)
 			  GROUP BY 
 			      s.id, s.title, s.description, s.year;`
 
-	rows, err := Upper.SQL().Query(query, date, organizationUnitID)
+	if organizationUnitID == nil {
+		zero := 0
+		organizationUnitID = &zero
+	}
+
+	rows, err := Upper.SQL().Query(query, date, *organizationUnitID)
 
 	if err != nil {
 		return nil, newErrors.Wrap(err, "upper query")
