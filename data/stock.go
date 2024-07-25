@@ -56,6 +56,47 @@ func (t *Stock) GetAll(page *int, size *int, condition *up.AndExpr, orders []int
 	return all, &total, err
 }
 
+func (t *Stock) GetAllForReport(date time.Time, organizationUnitID *int) ([]*Stock, error) {
+	query := `SELECT 
+    			s.id AS article_id,
+    			s.title,
+    			s.description,
+    			s.year,
+    			s.amount + COALESCE(SUM(ma.amount), 0) AS stock_amount
+			  FROM 
+			      stocks s
+			  LEFT JOIN 
+			      movement_articles ma ON s.id = ma.stock_id AND ma.created_at < $1 
+			  WHERE 
+			      s.created_at < $1
+			      AND ($2 IS NULL OR s.organization_unit_id = $2)
+			  GROUP BY 
+			      s.id, s.title, s.description, s.year;`
+
+	rows, err := Upper.SQL().Query(query, date, organizationUnitID)
+
+	if err != nil {
+		return nil, newErrors.Wrap(err, "upper query")
+	}
+
+	defer rows.Close()
+
+	var articles []*Stock
+
+	for rows.Next() {
+		var article Stock
+		err := rows.Scan(&article.ID, &article.Title, &article.Description, &article.Year, &article.Amount)
+		if err != nil {
+			return nil, newErrors.Wrap(err, "upper scan")
+		}
+
+		articles = append(articles, &article)
+	}
+
+	return articles, nil
+
+}
+
 // Get gets one record from the database, by id, using Upper
 func (t *Stock) Get(id int) (*Stock, error) {
 	var one Stock

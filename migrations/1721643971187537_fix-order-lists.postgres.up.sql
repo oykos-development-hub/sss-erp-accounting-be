@@ -1,0 +1,1 @@
+alter table order_lists alter column public_procurement_id drop not null;

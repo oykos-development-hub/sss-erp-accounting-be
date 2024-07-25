@@ -39,6 +39,7 @@ func routes(app *celeritas.Celeritas, middleware *middleware.Middleware, handler
 		rt.Post("/stocks", handlers.StockHandler.CreateStock)
 		rt.Get("/stocks/{id}", handlers.StockHandler.GetStockById)
 		rt.Get("/stocks", handlers.StockHandler.GetStockList)
+		rt.Get("/get-all-stocks", handlers.StockHandler.GetAllForReport)
 		rt.Put("/stocks/{id}", handlers.StockHandler.UpdateStock)
 		rt.Delete("/stocks/{id}", handlers.StockHandler.DeleteStock)
 

@@ -1,6 +1,8 @@
 package services
 
 import (
+	"time"
+
 	"gitlab.sudovi.me/erp/accounting-api/data"
 	"gitlab.sudovi.me/erp/accounting-api/dto"
 	newErrors "gitlab.sudovi.me/erp/accounting-api/pkg/errors"
@@ -133,4 +135,17 @@ func (h *StockServiceImpl) GetStockList(input *dto.StockFilterDTO) ([]dto.StockR
 	response := dto.ToStockListResponseDTO(data)
 
 	return response, total, nil
+}
+
+func (h *StockServiceImpl) GetAllForReport(date time.Time, organizationUnitID *int) ([]dto.StockResponseDTO, error) {
+	data, err := h.repo.GetAllForReport(date, organizationUnitID)
+
+	if err != nil {
+		return nil, newErrors.Wrap(err, "repo stock get all for report")
+	}
+
+	response := dto.ToStockListResponseDTO(data)
+
+	return response, nil
+
 }

@@ -8,9 +8,9 @@ type Handlers struct {
 	MovementHandler                MovementHandler
 	StockHandler                   StockHandler
 	MovementArticleHandler         MovementArticleHandler
-	LogHandler LogHandler
-		ErrorLogHandler ErrorLogHandler
-	}
+	LogHandler                     LogHandler
+	ErrorLogHandler                ErrorLogHandler
+}
 
 type OrderListHandler interface {
 	CreateOrderList(w http.ResponseWriter, r *http.Request)
@@ -44,6 +44,7 @@ type StockHandler interface {
 	DeleteStock(w http.ResponseWriter, r *http.Request)
 	GetStockById(w http.ResponseWriter, r *http.Request)
 	GetStockList(w http.ResponseWriter, r *http.Request)
+	GetAllForReport(w http.ResponseWriter, r *http.Request)
 }
 
 type MovementArticleHandler interface {

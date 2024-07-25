@@ -135,3 +135,24 @@ func (h *stockHandlerImpl) GetStockList(w http.ResponseWriter, r *http.Request) 
 
 	_ = h.App.WriteDataResponseWithTotal(w, http.StatusOK, "", res, int(*total))
 }
+
+func (h *stockHandlerImpl) GetAllForReport(w http.ResponseWriter, r *http.Request) {
+	var input dto.StockFilterDTO
+	err := h.App.ReadJSON(w, r, &input)
+	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
+		h.App.ErrorLog.Print(err)
+		_ = h.App.WriteErrorResponse(w, http.StatusBadRequest, err)
+		return
+	}
+
+	res, err := h.service.GetAllForReport(input.Date, input.OrganizationUnitID)
+	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
+		h.App.ErrorLog.Print(err)
+		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
+		return
+	}
+
+	_ = h.App.WriteDataResponse(w, http.StatusOK, "", res)
+}

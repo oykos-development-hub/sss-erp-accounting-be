@@ -2,6 +2,7 @@ package services
 
 import (
 	"context"
+	"time"
 
 	"gitlab.sudovi.me/erp/accounting-api/dto"
 )
@@ -44,6 +45,7 @@ type StockService interface {
 	DeleteStock(id int) error
 	GetStock(id int) (*dto.StockResponseDTO, error)
 	GetStockList(input *dto.StockFilterDTO) ([]dto.StockResponseDTO, *uint64, error)
+	GetAllForReport(date time.Time, organizationUnitID *int) ([]dto.StockResponseDTO, error)
 }
 
 type MovementArticleService interface {
