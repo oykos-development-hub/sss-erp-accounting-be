@@ -66,9 +66,9 @@ func (t *Stock) GetAllForReport(date time.Time, organizationUnitID *int) ([]*Sto
 			  FROM 
 			      stocks s
 			  LEFT JOIN 
-			      movement_articles ma ON s.id = ma.stock_id AND ma.created_at < $1 
+			      movement_articles ma ON s.id = ma.stock_id AND ma.created_at > $1 
 			  WHERE 
-			      s.created_at < $1
+			      s.created_at <= $1
 			      AND ($2 = 0 OR s.organization_unit_id = $2)
 			  GROUP BY 
 			      s.id, s.title, s.description, s.year;`
