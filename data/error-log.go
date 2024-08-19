@@ -12,7 +12,6 @@ var (
 	AccountingEntryItemEntity HandlersEntities = "AccountingEntryItem"
 )
 
-// ErrorLog struct
 type ErrorLog struct {
 	ID        int              `db:"id,omitempty"`
 	Error     string           `db:"error"`
