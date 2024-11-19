@@ -90,6 +90,10 @@ func (h *MovementServiceImpl) GetMovementList(input *dto.MovementFilterDTO) ([]d
 		conditionAndExp = up.And(conditionAndExp, &up.Cond{"office_id": *input.OfficeID})
 	}
 
+	if input.OrganizationUnitID != nil {
+		conditionAndExp = up.And(conditionAndExp, &up.Cond{"organization_unit_id": *input.OrganizationUnitID})
+	}
+
 	var orders []interface{}
 
 	if input.SortByDateOrder != nil {

@@ -10,7 +10,8 @@ type Handlers struct {
 	MovementArticleHandler         MovementArticleHandler
 	LogHandler                     LogHandler
 	ErrorLogHandler                ErrorLogHandler
-}
+	StockOrderArticleHandler StockOrderArticleHandler
+	}
 
 type OrderListHandler interface {
 	CreateOrderList(w http.ResponseWriter, r *http.Request)
@@ -68,4 +69,12 @@ type ErrorLogHandler interface {
 	DeleteErrorLog(w http.ResponseWriter, r *http.Request)
 	GetErrorLogById(w http.ResponseWriter, r *http.Request)
 	GetErrorLogList(w http.ResponseWriter, r *http.Request)
+}
+
+type StockOrderArticleHandler interface {
+	CreateStockOrderArticle(w http.ResponseWriter, r *http.Request)
+	UpdateStockOrderArticle(w http.ResponseWriter, r *http.Request)
+	DeleteStockOrderArticle(w http.ResponseWriter, r *http.Request)
+	GetStockOrderArticleById(w http.ResponseWriter, r *http.Request)
+	GetStockOrderArticleList(w http.ResponseWriter, r *http.Request)
 }

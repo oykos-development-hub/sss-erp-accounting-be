@@ -71,3 +71,11 @@ type ErrorLogService interface {
 	GetErrorLog(id int) (*dto.ErrorLogResponseDTO, error)
 	GetErrorLogList(filter dto.ErrorLogFilterDTO) ([]dto.ErrorLogResponseDTO, *uint64, error)
 }
+
+type StockOrderArticleService interface {
+	CreateStockOrderArticle(input dto.StockOrderArticleDTO) (*dto.StockOrderArticleResponseDTO, error)
+	UpdateStockOrderArticle(id int, input dto.StockOrderArticleDTO) (*dto.StockOrderArticleResponseDTO, error)
+	DeleteStockOrderArticle(id int) error
+	GetStockOrderArticle(id int) (*dto.StockOrderArticleResponseDTO, error)
+	GetStockOrderArticleList() ([]dto.StockOrderArticleResponseDTO, error)
+}

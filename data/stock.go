@@ -57,26 +57,34 @@ func (t *Stock) GetAll(page *int, size *int, condition *up.AndExpr, orders []int
 }
 
 func (t *Stock) GetAllForReport(date time.Time, organizationUnitID *int) ([]*Stock, error) {
+
 	query := `SELECT 
-    			s.id AS article_id,
-    			s.title,
-    			s.description,
-    			s.year,
-    			s.amount + COALESCE(SUM(ma.amount), 0) AS stock_amount
-			  FROM 
-			      stocks s
-			  LEFT JOIN 
-			      movement_articles ma ON s.id = ma.stock_id AND ma.created_at > $1 
-			  WHERE 
-			      s.created_at <= $1
-			      AND ($2 = 0 OR s.organization_unit_id = $2)
-			  GROUP BY 
-			      s.id, s.title, s.description, s.year;`
+			    s.id AS article_id,
+			    s.title,
+			    s.description,
+			    s.year,
+			    s.amount 
+			        - COALESCE(SUM(ma.amount), 0) 
+			        + COALESCE(SUM(opa.amount), 0) AS stock_amount
+				FROM 
+				    stocks s
+				LEFT JOIN 
+				    movement_articles ma ON s.id = ma.stock_id AND ma.created_at > $1
+				LEFT JOIN 
+				    order_procurement_articles opa ON s.id = opa.stock_id 
+				LEFT JOIN 
+					order_lists ol ON opa.order_list_id = ol.id AND ol.receipt_date <= $1
+				WHERE 
+				    AND ($2 = 0 OR s.organization_unit_id = $2)
+				GROUP BY 
+				    s.id, s.title, s.description, s.year;`
 
 	if organizationUnitID == nil {
 		zero := 0
 		organizationUnitID = &zero
 	}
+
+	date = time.Date(date.Year(), date.Month(), date.Day(), 23, 59, 59, 0, date.Location())
 
 	rows, err := Upper.SQL().Query(query, date, *organizationUnitID)
 

@@ -28,11 +28,12 @@ type MovementResponseDTO struct {
 }
 
 type MovementFilterDTO struct {
-	Page            *int    `json:"page"`
-	Size            *int    `json:"size"`
-	RecipientUserID *int    `json:"recipient_user_id"`
-	OfficeID        *int    `json:"office_id"`
-	SortByDateOrder *string `json:"sort_by_date_order"`
+	Page               *int    `json:"page"`
+	Size               *int    `json:"size"`
+	RecipientUserID    *int    `json:"recipient_user_id"`
+	OfficeID           *int    `json:"office_id"`
+	SortByDateOrder    *string `json:"sort_by_date_order"`
+	OrganizationUnitID *int    `json:"organization_unit_id"`
 }
 
 type MovementReportFilterDTO struct {

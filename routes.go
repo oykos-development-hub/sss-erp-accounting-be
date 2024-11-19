@@ -59,6 +59,12 @@ func routes(app *celeritas.Celeritas, middleware *middleware.Middleware, handler
 		rt.Get("/error-logs", handlers.ErrorLogHandler.GetErrorLogList)
 		rt.Put("/error-logs/{id}", handlers.ErrorLogHandler.UpdateErrorLog)
 		rt.Delete("/error-logs/{id}", handlers.ErrorLogHandler.DeleteErrorLog)
+
+		rt.Post("/stock-order-articles", handlers.StockOrderArticleHandler.CreateStockOrderArticle)
+		rt.Get("/stock-order-articles/{id}", handlers.StockOrderArticleHandler.GetStockOrderArticleById)
+		rt.Get("/stock-order-articles", handlers.StockOrderArticleHandler.GetStockOrderArticleList)
+		rt.Put("/stock-order-articles/{id}", handlers.StockOrderArticleHandler.UpdateStockOrderArticle)
+		rt.Delete("/stock-order-articles/{id}", handlers.StockOrderArticleHandler.DeleteStockOrderArticle)
 	})
 
 	return app.Routes

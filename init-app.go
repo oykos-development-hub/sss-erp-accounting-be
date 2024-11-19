@@ -50,6 +50,9 @@ func initApplication() *celeritas.Celeritas {
 	LogService := services.NewLogServiceImpl(cel, models.Log)
 	LogHandler := handlers.NewLogHandler(cel, LogService, ErrorLogService)
 
+	StockOrderArticleService := services.NewStockOrderArticleServiceImpl(cel, models.StockOrderArticle)
+	StockOrderArticleHandler := handlers.NewStockOrderArticleHandler(cel, StockOrderArticleService)
+
 	myHandlers := &handlers.Handlers{
 		OrderListHandler:               OrderListHandler,
 		OrderProcurementArticleHandler: OrderProcurementArticleHandler,
@@ -58,6 +61,7 @@ func initApplication() *celeritas.Celeritas {
 		MovementArticleHandler:         MovementArticleHandler,
 		LogHandler:                     LogHandler,
 		ErrorLogHandler:                ErrorLogHandler,
+		StockOrderArticleHandler:       StockOrderArticleHandler,
 	}
 
 	myMiddleware := &middleware.Middleware{
