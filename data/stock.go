@@ -110,7 +110,7 @@ func (t *Stock) GetAllForReport(date time.Time, organizationUnitID *int) ([]*Sto
 
 	for rows2.Next() {
 		var article Stock
-		err := rows.Scan(&article.ID, &article.Title, &article.Description, &article.Year, &article.Amount)
+		err := rows2.Scan(&article.ID, &article.Title, &article.Description, &article.Year, &article.Amount)
 		if err != nil {
 			return nil, newErrors.Wrap(err, "upper scan")
 		}
