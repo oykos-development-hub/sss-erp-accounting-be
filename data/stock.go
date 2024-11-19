@@ -80,7 +80,7 @@ func (t *Stock) GetAllForReport(date time.Time, organizationUnitID *int) ([]*Sto
 
 	date = time.Date(date.Year(), date.Month(), date.Day(), 23, 59, 59, 0, date.Location())
 
-	rows, err := Upper.SQL().Query(queryStock, date, *organizationUnitID)
+	rows, err := Upper.SQL().Query(queryStock, *organizationUnitID, date)
 
 	if err != nil {
 		return nil, newErrors.Wrap(err, "upper query")
@@ -100,7 +100,7 @@ func (t *Stock) GetAllForReport(date time.Time, organizationUnitID *int) ([]*Sto
 		articles = append(articles, &article)
 	}
 
-	rows2, err := Upper.SQL().Query(queryMovement, date, *organizationUnitID)
+	rows2, err := Upper.SQL().Query(queryMovement, *organizationUnitID, date)
 
 	if err != nil {
 		return nil, newErrors.Wrap(err, "upper query")
