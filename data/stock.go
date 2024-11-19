@@ -58,26 +58,20 @@ func (t *Stock) GetAll(page *int, size *int, condition *up.AndExpr, orders []int
 
 func (t *Stock) GetAllForReport(date time.Time, organizationUnitID *int) ([]*Stock, error) {
 
-	query := `SELECT 
-			    s.id AS article_id,
-			    s.title,
-			    s.description,
-			    s.year,
-			    s.amount 
-			        - COALESCE(SUM(ma.amount), 0) 
-			        + COALESCE(SUM(opa.amount), 0) AS stock_amount
-				FROM 
-				    stocks s
-				LEFT JOIN 
-				    movement_articles ma ON s.id = ma.stock_id AND ma.created_at > $1
-				LEFT JOIN 
-				    order_procurement_articles opa ON s.id = opa.stock_id 
-				LEFT JOIN 
-					order_lists ol ON opa.order_list_id = ol.id AND ol.receipt_date <= $1
-				WHERE 
-				    AND ($2 = 0 OR s.organization_unit_id = $2)
-				GROUP BY 
-				    s.id, s.title, s.description, s.year;`
+	queryStock := `SELECT s.id AS article_id, s.title, s.description, s.year, COALESCE(SUM(opa.amount), 0) AS stock_amount 
+			  FROM stocks s 
+			  LEFT JOIN stock_order_articles soa ON soa.stock_id = s.id
+			  LEFT JOIN order_procurement_articles opa ON opa.id = soa.article_id   
+			  LEFT JOIN order_lists ol ON opa.order_id = ol.id 
+			  WHERE ($1 = 0 OR s.organization_unit_id = $1) AND ol.date_system <= $2 
+			  GROUP BY s.id, s.title, s.description, s.year;`
+
+	queryMovement := `SELECT s.id AS article_id, s.title, s.description, s.year, COALESCE(SUM(ma.amount), 0) AS stock_amount
+				FROM movements m
+				LEFT JOIN movement_articles ma ON ma.movement_id = m.id
+				LEFT JOIN stocks s ON s.id = ma.stock_id
+				WHERE ($1 = 0 OR m.organization_unit_id = $1) AND m.created_at < $2
+				GROUP BY s.id, s.title, s.description, s.year;`
 
 	if organizationUnitID == nil {
 		zero := 0
@@ -86,7 +80,7 @@ func (t *Stock) GetAllForReport(date time.Time, organizationUnitID *int) ([]*Sto
 
 	date = time.Date(date.Year(), date.Month(), date.Day(), 23, 59, 59, 0, date.Location())
 
-	rows, err := Upper.SQL().Query(query, date, *organizationUnitID)
+	rows, err := Upper.SQL().Query(queryStock, date, *organizationUnitID)
 
 	if err != nil {
 		return nil, newErrors.Wrap(err, "upper query")
@@ -106,7 +100,36 @@ func (t *Stock) GetAllForReport(date time.Time, organizationUnitID *int) ([]*Sto
 		articles = append(articles, &article)
 	}
 
-	return articles, nil
+	rows2, err := Upper.SQL().Query(queryMovement, date, *organizationUnitID)
+
+	if err != nil {
+		return nil, newErrors.Wrap(err, "upper query")
+	}
+
+	defer rows2.Close()
+
+	for rows2.Next() {
+		var article Stock
+		err := rows.Scan(&article.ID, &article.Title, &article.Description, &article.Year, &article.Amount)
+		if err != nil {
+			return nil, newErrors.Wrap(err, "upper scan")
+		}
+
+		for i := 0; i < len(articles); i++ {
+			if articles[i].ID == article.ID {
+				articles[i].Amount -= article.Amount
+			}
+		}
+	}
+
+	filteredArticles := []*Stock{}
+	for _, article := range articles {
+		if article.Amount > 0 {
+			filteredArticles = append(filteredArticles, article)
+		}
+	}
+
+	return filteredArticles, nil
 
 }
 
